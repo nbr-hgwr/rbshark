@@ -1,0 +1,3 @@
+#!/usr/bin/env ruby
+
+require "rb_packet_capture"
