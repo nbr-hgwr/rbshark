@@ -3,8 +3,8 @@ require_relative 'lib/rb_packet_capture/version'
 Gem::Specification.new do |spec|
   spec.name          = "rb_packet_capture"
   spec.version       = RbPacketCapture::VERSION
-  spec.authors       = ["Noboru Hagiwara"]
-  spec.email         = ["hagiwara@mfeed.ad.jp"]
+  spec.authors       = ["nbr-hgwr"]
+  spec.email         = ["mp7.fal@gmail.com"]
 
   spec.summary       = %q{TODO: Write a short summary, because RubyGems requires one.}
   spec.description   = %q{TODO: Write a longer description or delete this line.}
