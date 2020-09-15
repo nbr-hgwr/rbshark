@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rb_packet_capture/resource/type'
 
 module RbPacketCapture

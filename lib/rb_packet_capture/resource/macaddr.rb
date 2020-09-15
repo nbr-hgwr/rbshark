@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RbPacketCapture
   class MacAddr
     def initialize(addr)

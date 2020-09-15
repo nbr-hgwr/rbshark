@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'socket'
 require 'rb_packet_capture/analyzer'
 require 'rb_packet_capture/printer'
