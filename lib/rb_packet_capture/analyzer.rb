@@ -4,7 +4,6 @@ require 'rb_packet_capture/resource/type'
 
 module RbPacketCapture
   class Analyzer
-
     def uint8(size)
       if size == 1
         r = @frame[@byte].ord
