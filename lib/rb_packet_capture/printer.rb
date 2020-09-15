@@ -3,14 +3,14 @@
 module RbPacketCapture
   class Printer
     def print_ethernet(ether_header)
-      puts "Ethernet Header-----------------"
+      puts 'Ethernet Header-----------------'
       puts "  dst: #{ether_header.ether_dhost}"
       puts "  src: #{ether_header.ether_shost}"
       puts "  type: #{ether_header.ether_type} (#{ether_header.check_protocol_type})"
     end
 
     def print_arp(arp_header)
-      puts "ARP Header----------------------"
+      puts 'ARP Header----------------------'
       puts "  [#{arp_header.check_opration}]"
       puts "  sha: #{arp_header.ar_sha}"
       puts "  spa: #{arp_header.ar_sip}"
@@ -22,7 +22,7 @@ module RbPacketCapture
     end
 
     def print_ip(ip_header)
-      puts "IP Header-----------------------"
+      puts 'IP Header-----------------------'
       puts "  dst: #{ip_header.ip_dst}"
       puts "  src: #{ip_header.ip_src}"
       puts "  type: #{ip_header.ip_p} (#{ip_header.check_protocol_type})"
@@ -32,14 +32,14 @@ module RbPacketCapture
     end
 
     def print_icmp(icmp)
-      puts "ICMP----------------------------"
+      puts 'ICMP----------------------------'
       puts "  type: #{icmp.icmp_type} (#{icmp.check_type})"
       puts "  code: #{icmp.icmp_code}"
       puts "  check: #{icmp.icmp_checksum}"
     end
 
     def print_tcp(tcp)
-      puts "TCP-----------------------------"
+      puts 'TCP-----------------------------'
       puts "  src_port: #{tcp.th_sport}"
       puts "  dst_port: #{tcp.th_dport}"
       puts "  sequence: #{tcp.th_seq}, off_set: #{tcp.th_off}"
@@ -48,7 +48,7 @@ module RbPacketCapture
     end
 
     def print_udp(udp)
-      puts "UDP-----------------------------"
+      puts 'UDP-----------------------------'
       puts "  src_port: #{udp.uh_sport}"
       puts "  dst_port: #{udp.uh_dport}"
       puts "  len: #{udp.uh_ulen}, check: #{udp.uh_sum}"

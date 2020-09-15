@@ -41,7 +41,6 @@ module RbPacketCapture
       @frame = frame
       @byte = byte
 
-      #end
       @ether_dhost = MacAddr.new uint8(6)
       @ether_shost = MacAddr.new uint8(6)
       @ether_type = uint16
@@ -238,7 +237,7 @@ module RbPacketCapture
       @th_x2    = (@frame[@byte].ord & 0xF) + ((@frame[@byte + 1].ord >> 2) & 0xF)
       @th_flags = @frame[@byte + 1].ord & 0xF
       @byte = byte + 2
-      @byte = @byte + 2
+      @byte += 2
 
       @th_win   = uint16
       @th_sum   = uint16

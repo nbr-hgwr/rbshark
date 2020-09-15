@@ -25,7 +25,7 @@ Metrics/PerceivedComplexity:
 # 改行が難しい場合もあるため許容
 # 参考 https://github.com/rubocop-hq/rubocop-jp/issues/32
 Metrics/LineLength:
-  Max: 100
+  Max: 110
 
 Metrics/BlockLength:
   Max: 30
@@ -55,4 +55,8 @@ Layout/ExtraSpacing:
 
 # 条件にtrueを使用できるようにする
 Lint/LiteralAsCondition:
+  Enabled: false
+
+# 無限ループを許可
+Style/InfiniteLoop:
   Enabled: false

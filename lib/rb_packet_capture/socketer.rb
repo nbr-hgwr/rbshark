@@ -55,12 +55,11 @@ module RbPacketCapture
             udp = RbPacketCapture::UDPAnalyzer.new(frame, ip_header.get_byte)
             printer.print_udp(udp)
           end
-        # when 'IPv6'
-        # ipv6_header = IPV6Analyzer.new(frame, ether_header.get_byte)
-        # print_ip(ipv6_header)
+          # when 'IPv6'
+          # ipv6_header = IPV6Analyzer.new(frame, ether_header.get_byte)
+          # print_ip(ipv6_header)
         end
       end
     end
-
   end
 end
