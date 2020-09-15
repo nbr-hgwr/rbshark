@@ -26,7 +26,7 @@ module RbPacketCapture
       sll = [Socket::AF_PACKET].pack('s')
       sll << [RbPacketCapture::ETH_P_ALL].pack('s')
       sll << ifnum
-      sll << ("\x00" * (RbPacketCapture::SOCKADDR_LL_SIZE - sll.length))
+      sll << ('\x00' * (RbPacketCapture::SOCKADDR_LL_SIZE - sll.length))
     end
 
     def bind(socket)
@@ -37,24 +37,24 @@ module RbPacketCapture
         printer = RbPacketCapture::Printer.new()
         printer.print_ethernet(ether_header)
         case ether_header.check_protocol_type
-        when "ARP"
+        when 'ARP'
           arp_header = RbPacketCapture::ARPAnalyzer.new(frame, ether_header.get_byte)
           printer.print_arp(arp_header)
-        when "IP"
+        when 'IP'
           ip_header = RbPacketCapture::IPAnalyzer.new(frame, ether_header.get_byte)
           printer.print_ip(ip_header)
           case ip_header.check_protocol_type
-          when "ICMP"
+          when 'ICMP'
             icmp = RbPacketCapture::ICMPAnalyzer.new(frame, ip_header.get_byte)
             printer.print_icmp(icmp)
-          when "TCP"
+          when 'TCP'
             tcp = RbPacketCapture::TCPAnalyzer.new(frame, ip_header.get_byte)
             printer.print_tcp(tcp)
-          when "UDP"
+          when 'UDP'
             udp = RbPacketCapture::UDPAnalyzer.new(frame, ip_header.get_byte)
             printer.print_udp(udp)
           end
-        #when "IPv6"
+        #when 'IPv6'
         #  ipv6_header = IPV6Analyzer.new(frame, ether_header.get_byte)
         #  print_ip(ipv6_header)
         end

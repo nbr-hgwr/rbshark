@@ -48,13 +48,13 @@ module RbPacketCapture
     def check_protocol_type
       case @ether_type
       when ETH_P_IP
-        "IP"
+        'IP'
       when ETH_P_IPV6
-        "IPv6"
+        'IPv6'
       when ETH_P_ARP
-        "ARP"
+        'ARP'
       else
-        "Other"
+        'Other'
       end
     end
   end
@@ -88,28 +88,28 @@ module RbPacketCapture
     def check_protocol_type
       case @ar_pro
       when ETH_P_IP
-        "IP"
+        'IP'
       else
-        "Other"
+        'Other'
       end
     end
 
     def check_opration
       case @ar_op
       when 1
-        "ARP REQUEST"
+        'ARP REQUEST'
       when 2
-        "ARP REPLY"
+        'ARP REPLY'
       when 3
-        "RARP REQUEST"
+        'RARP REQUEST'
       when 4
-        "RARP REPLY"
+        'RARP REPLY'
       when 8
-        "InARP REQUEST"
+        'InARP REQUEST'
       when 9
-        "InARP REPLY"
+        'InARP REPLY'
       when 10
-        "ARP NAK"
+        'ARP NAK'
       end
     end
   end
@@ -178,31 +178,31 @@ module RbPacketCapture
     def check_type
       case @icmp_type
       when 0
-        "Echo Reply"
+        'Echo Reply'
       when 3
-        "Destination Unreachable"
+        'Destination Unreachable'
       when 4
-        "Source Quench"
+        'Source Quench'
       when 5
-        "Redirect"
+        'Redirect'
       when 8
-        "Echo Request"
+        'Echo Request'
       when 11
-        "Time Exceeded "
+        'Time Exceeded '
       when 12
-        "Parameter Problem"
+        'Parameter Problem'
       when 13
-        "Timestamp Request"
+        'Timestamp Request'
       when 14
-        "Timestamp Reply"
+        'Timestamp Reply'
       when 15
-        "Information Request"
+        'Information Request'
       when 16
-        "Information Reply"
+        'Information Reply'
       when 17
-        "Address Mask Request"
+        'Address Mask Request'
       when 18
-        "Address Mask Reply"
+        'Address Mask Reply'
       end
     end
 
@@ -296,13 +296,13 @@ module RbPacketCapture
     def check_protocol_type
       case @ip_p
       when 1
-        "ICMP"
+        'ICMP'
       when 6
-        "TCP"
+        'TCP'
       when 22
-        "UDP"
+        'UDP'
       else
-        "Other"
+        'Other'
       end
     end
   end

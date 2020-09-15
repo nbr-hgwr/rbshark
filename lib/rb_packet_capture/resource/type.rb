@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module RbPacketCapture
   ETH_P_ALL             = 0x0300
   ETH_P_IP              = 0x0800
