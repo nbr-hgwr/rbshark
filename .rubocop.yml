@@ -48,3 +48,11 @@ Style/Documentation:
 # operatorの周りを単一スペースではない場合も許可
 Layout/SpaceAroundOperators:
   Enabled: false
+
+# 余計なスペースを許可
+Layout/ExtraSpacing:
+  Enabled: false
+
+# 条件にtrueを使用できるようにする
+Lint/LiteralAsCondition:
+  Enabled: false

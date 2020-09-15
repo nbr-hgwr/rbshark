@@ -7,7 +7,6 @@ require 'rb_packet_capture/resource/type'
 
 module RbPacketCapture
   class Socketer
-
     def initialize(interface)
       @interface = interface
     end
@@ -32,11 +31,11 @@ module RbPacketCapture
     end
 
     def bind(socket)
-      while (true)
+      while true
         mesg = socket.recvfrom(1024*8)
         frame = mesg[0]
         ether_header = RbPacketCapture::EthernetAnalyzer.new(frame)
-        printer = RbPacketCapture::Printer.new()
+        printer = RbPacketCapture::Printer.new
         printer.print_ethernet(ether_header)
         case ether_header.check_protocol_type
         when 'ARP'
@@ -56,9 +55,9 @@ module RbPacketCapture
             udp = RbPacketCapture::UDPAnalyzer.new(frame, ip_header.get_byte)
             printer.print_udp(udp)
           end
-        #when 'IPv6'
-        #  ipv6_header = IPV6Analyzer.new(frame, ether_header.get_byte)
-        #  print_ip(ipv6_header)
+        # when 'IPv6'
+        # ipv6_header = IPV6Analyzer.new(frame, ether_header.get_byte)
+        # print_ip(ipv6_header)
         end
       end
     end
