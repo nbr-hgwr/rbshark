@@ -7,20 +7,20 @@ module RbPacketCapture
       if size == 1
         r = @frame[@byte].ord
       else
-        r = @frame[@byte...@byte+size].split('').map {|c| c.ord}
+        r = @frame[@byte...@byte + size].split('').map { |c| c.ord }
       end
       @byte += size
       r
     end
 
     def uint16
-      r = (@frame[@byte].ord << 8) + @frame[@byte+1].ord
+      r = (@frame[@byte].ord << 8) + @frame[@byte + 1].ord
       @byte += 2
       r
     end
 
     def uint32
-      r = (@frame[@byte].ord << 8) + @frame[@byte+1].ord + @frame[@byte+2].ord + @frame[@byte+3].ord
+      r = (@frame[@byte].ord << 8) + @frame[@byte + 1].ord + @frame[@byte + 2].ord + @frame[@byte + 3].ord
       @byte += 4
       r
     end
@@ -133,7 +133,7 @@ module RbPacketCapture
 
       @version = (@frame[@byte].ord >> 4) & 0xF
       @ip_hl = @frame[@byte].ord & 0xF
-      @byte +=1
+      @byte += 1
 
       @ip_tos = uint8(1)
       @ip_len = uint16
@@ -233,8 +233,8 @@ module RbPacketCapture
       @th_ack   = uint32
 
       @th_off   = (@frame[@byte].ord >> 4) & 0xF
-      @th_x2    = (@frame[@byte].ord & 0xF) + ((@frame[@byte+1].ord >> 2) & 0xF)
-      @th_flags = @frame[@byte+1].ord & 0xF
+      @th_x2    = (@frame[@byte].ord & 0xF) + ((@frame[@byte + 1].ord >> 2) & 0xF)
+      @th_flags = @frame[@byte + 1].ord & 0xF
       @byte = byte + 2
       @byte = @byte + 2
 
