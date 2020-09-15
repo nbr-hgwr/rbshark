@@ -6,10 +6,10 @@ module RbPacketCapture
   class Analyzer
     def uint8(size)
       r = if size == 1
-        @frame[@byte].ord
-      else
-        @frame[@byte...@byte + size].split('').map { |c| c.ord }
-      end
+            @frame[@byte].ord
+          else
+            @frame[@byte...@byte + size].split('').map { |c| c.ord }
+          end
       @byte += size
       r
     end
