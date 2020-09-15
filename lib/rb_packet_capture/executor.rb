@@ -1,4 +1,4 @@
-require 'rb_packet_capture/soketer'
+require 'rb_packet_capture/socketer'
 
 module RbPacketCapture
   class Executor
@@ -7,7 +7,7 @@ module RbPacketCapture
     end
 
     def execute
-      PacketCapture::Soketer.new(@cli_opts['interface']) if @cli_opts.include?('interface')
+      RbPacketCapture::Socketer.new(@cli_opts['interface']).start if @cli_opts.include?('interface')
     rescue StandardError => e
       raise e
     end

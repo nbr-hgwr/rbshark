@@ -8,7 +8,9 @@ module RbPacketCapture
     class << self
       def parse_options
         opt = OptionParser.new
-        opt.version = "exagen: #{PacketCapture::VERSION}"
+        opt.version = "exagen: #{RbPacketCapture::VERSION}"
+
+        params = {}
 
         opt.on '-i INTERFACE', '--interface', 'specify interface' do |v|
           params['interface'] = v
@@ -16,15 +18,17 @@ module RbPacketCapture
 
         begin
           opt.parse! ARGV
-        rescue StandardError
+        rescue StandardError => e
+          p "Error: #{e}"
           abort "#{$ERROR_INFO}\n\n#{opt.help}"
         end
 
+        params
       end
 
       def start
         opts = parse_options
-        PacketCapture::Executor.new(opts).execute
+        RbPacketCapture::Executor.new(opts).execute
       end
     end
   end

@@ -1,4 +1,4 @@
-require 'rb_packet_capture/resouce/type'
+require 'rb_packet_capture/resource/type'
 
 module RbPacketCapture
   class Analyzer
