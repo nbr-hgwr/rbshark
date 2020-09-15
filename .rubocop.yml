@@ -1,3 +1,6 @@
+AllCops:
+  NewCops: enable
+
 # 作成時の最高値で設定
 Metrics/MethodLength:
   Max: 45
@@ -60,3 +63,6 @@ Lint/LiteralAsCondition:
 # 無限ループを許可
 Style/InfiniteLoop:
   Enabled: false
+
+  Style/SymbolProc:
+    Enabled: false

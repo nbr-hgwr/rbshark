@@ -5,10 +5,10 @@ require 'rb_packet_capture/resource/type'
 module RbPacketCapture
   class Analyzer
     def uint8(size)
-      if size == 1
-        r = @frame[@byte].ord
+      r = if size == 1
+        @frame[@byte].ord
       else
-        r = @frame[@byte...@byte + size].split('').map { |c| c.ord }
+        @frame[@byte...@byte + size].split('').map { |c| c.ord }
       end
       @byte += size
       r
