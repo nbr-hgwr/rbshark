@@ -1,0 +1,46 @@
+# 作成時の最高値で設定
+Metrics/MethodLength:
+  Max: 45
+
+# 作成時の最高値で設定
+Metrics/AbcSize:
+  Max: 40
+
+# 作成時の最高値で設定
+Metrics/ClassLength:
+  Max: 304
+
+# 作成時の最高値で設定
+Metrics/CyclomaticComplexity:
+  Max: 15
+
+# 作成時の最高値で設定
+Metrics/ParameterLists:
+  Max: 7
+
+# 作成時の最高値で設定
+Metrics/PerceivedComplexity:
+  Max: 14
+
+# 改行が難しい場合もあるため許容
+# 参考 https://github.com/rubocop-hq/rubocop-jp/issues/32
+Metrics/LineLength:
+  Max: 100
+
+Metrics/BlockLength:
+  Max: 30
+
+# 日本語のコメントを許可する
+Style/AsciiComments:
+  Enabled: false
+
+# whenのbodyが空なのを許可する
+Lint/EmptyWhen:
+  Enabled: false
+
+Style/GuardClause:
+  MinBodyLength: 5
+
+# ドキュメントの無い public class を許可する
+Style/Documentation:
+  Enabled: false
