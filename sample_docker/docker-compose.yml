@@ -1,0 +1,12 @@
+version: '2'
+services:
+  node1:
+    build: ./node1
+    volumes:
+      - ../:/rb_packet_capture
+    tty: true
+  node2:
+    build: ./node2
+    volumes:
+      - ../:/rb_packet_capture
+    tty: true
