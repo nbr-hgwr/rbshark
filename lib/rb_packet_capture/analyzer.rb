@@ -158,7 +158,6 @@ module RbPacketCapture
         'Other'
       end
     end
-
   end
 
   class ICMPAnalyzer < Analyzer
