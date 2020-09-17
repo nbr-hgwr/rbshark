@@ -1,31 +1,32 @@
+# frozen_string_literal: true
+
 require 'rb_packet_capture/resource/type'
 
 module RbPacketCapture
   class Analyzer
-
     def uint8(size)
-      if size == 1
-        r = @frame[@byte].ord
-      else
-        r = @frame[@byte...@byte+size].split('').map {|c| c.ord}
-      end
+      r = if size == 1
+            @frame[@byte].ord
+          else
+            @frame[@byte...@byte + size].split('').map { |c| c.ord }
+          end
       @byte += size
       r
     end
 
     def uint16
-      r = (@frame[@byte].ord << 8) + @frame[@byte+1].ord
+      r = (@frame[@byte].ord << 8) + @frame[@byte + 1].ord
       @byte += 2
       r
     end
 
     def uint32
-      r = (@frame[@byte].ord << 8) + @frame[@byte+1].ord + @frame[@byte+2].ord + @frame[@byte+3].ord
+      r = (@frame[@byte].ord << 8) + @frame[@byte + 1].ord + @frame[@byte + 2].ord + @frame[@byte + 3].ord
       @byte += 4
       r
     end
 
-    def get_byte
+    def return_byte
       @byte
     end
   end
@@ -39,7 +40,6 @@ module RbPacketCapture
       @frame = frame
       @byte = byte
 
-      #end
       @ether_dhost = MacAddr.new uint8(6)
       @ether_shost = MacAddr.new uint8(6)
       @ether_type = uint16
@@ -48,13 +48,13 @@ module RbPacketCapture
     def check_protocol_type
       case @ether_type
       when ETH_P_IP
-        "IP"
+        'IP'
       when ETH_P_IPV6
-        "IPv6"
+        'IPv6'
       when ETH_P_ARP
-        "ARP"
+        'ARP'
       else
-        "Other"
+        'Other'
       end
     end
   end
@@ -88,28 +88,28 @@ module RbPacketCapture
     def check_protocol_type
       case @ar_pro
       when ETH_P_IP
-        "IP"
+        'IP'
       else
-        "Other"
+        'Other'
       end
     end
 
     def check_opration
       case @ar_op
       when 1
-        "ARP REQUEST"
+        'ARP REQUEST'
       when 2
-        "ARP REPLY"
+        'ARP REPLY'
       when 3
-        "RARP REQUEST"
+        'RARP REQUEST'
       when 4
-        "RARP REPLY"
+        'RARP REPLY'
       when 8
-        "InARP REQUEST"
+        'InARP REQUEST'
       when 9
-        "InARP REPLY"
+        'InARP REPLY'
       when 10
-        "ARP NAK"
+        'ARP NAK'
       end
     end
   end
@@ -133,7 +133,7 @@ module RbPacketCapture
 
       @version = (@frame[@byte].ord >> 4) & 0xF
       @ip_hl = @frame[@byte].ord & 0xF
-      @byte +=1
+      @byte += 1
 
       @ip_tos = uint8(1)
       @ip_len = uint16
@@ -158,7 +158,6 @@ module RbPacketCapture
         'Other'
       end
     end
-
   end
 
   class ICMPAnalyzer < Analyzer
@@ -178,31 +177,31 @@ module RbPacketCapture
     def check_type
       case @icmp_type
       when 0
-        "Echo Reply"
+        'Echo Reply'
       when 3
-        "Destination Unreachable"
+        'Destination Unreachable'
       when 4
-        "Source Quench"
+        'Source Quench'
       when 5
-        "Redirect"
+        'Redirect'
       when 8
-        "Echo Request"
+        'Echo Request'
       when 11
-        "Time Exceeded "
+        'Time Exceeded '
       when 12
-        "Parameter Problem"
+        'Parameter Problem'
       when 13
-        "Timestamp Request"
+        'Timestamp Request'
       when 14
-        "Timestamp Reply"
+        'Timestamp Reply'
       when 15
-        "Information Request"
+        'Information Request'
       when 16
-        "Information Reply"
+        'Information Reply'
       when 17
-        "Address Mask Request"
+        'Address Mask Request'
       when 18
-        "Address Mask Reply"
+        'Address Mask Reply'
       end
     end
 
@@ -233,10 +232,10 @@ module RbPacketCapture
       @th_ack   = uint32
 
       @th_off   = (@frame[@byte].ord >> 4) & 0xF
-      @th_x2    = (@frame[@byte].ord & 0xF) + ((@frame[@byte+1].ord >> 2) & 0xF)
-      @th_flags = @frame[@byte+1].ord & 0xF
+      @th_x2    = (@frame[@byte].ord & 0xF) + ((@frame[@byte + 1].ord >> 2) & 0xF)
+      @th_flags = @frame[@byte + 1].ord & 0xF
       @byte = byte + 2
-      @byte = @byte + 2
+      @byte += 2
 
       @th_win   = uint16
       @th_sum   = uint16
@@ -296,13 +295,13 @@ module RbPacketCapture
     def check_protocol_type
       case @ip_p
       when 1
-        "ICMP"
+        'ICMP'
       when 6
-        "TCP"
+        'TCP'
       when 22
-        "UDP"
+        'UDP'
       else
-        "Other"
+        'Other'
       end
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PacketCapture
   class IPV6Addr
     def initialize(addr)

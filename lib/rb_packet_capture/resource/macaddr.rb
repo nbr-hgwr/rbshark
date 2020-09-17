@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RbPacketCapture
   class MacAddr
     def initialize(addr)
@@ -5,7 +7,7 @@ module RbPacketCapture
     end
 
     def to_s
-      @addr.map {|v| v.to_s(16).rjust(2, '0')} .join(':')
+      @addr.map { |v| v.to_s(16).rjust(2, '0') }.join(':')
     end
   end
 end
