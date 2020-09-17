@@ -26,7 +26,7 @@ module RbPacketCapture
       r
     end
 
-    def get_byte
+    def return_byte
       @byte
     end
   end
