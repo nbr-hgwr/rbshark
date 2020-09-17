@@ -4,7 +4,6 @@
 # vi: set ft=ruby :
 
 Vagrant.configure('2') do |config|
-
   config.vm.define :node1 do |node|
     node.vm.box = 'centos/7'
     node.vm.network :private_network, ip: '192.168.33.11'
