@@ -1,6 +1,6 @@
-# RbPacketCapture
+# Rbshark
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/rb_packet_capture`. To experiment with that code, run `bin/console` for an interactive prompt.
+Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/rbshark`. To experiment with that code, run `bin/console` for an interactive prompt.
 
 TODO: Delete this and the text above, and describe your gem
 
@@ -9,7 +9,7 @@ TODO: Delete this and the text above, and describe your gem
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'rb_packet_capture'
+gem 'rbshark'
 ```
 
 And then execute:
@@ -18,7 +18,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install rb_packet_capture
+    $ gem install rbshark
 
 ## Usage
 
@@ -40,9 +40,9 @@ docker-compose up -d
 
 docker exec -it sample_docker_node1_1 /bin/sh
   source /etc/profile.d/rbenv.sh
-  cd rb_packet_capture/
+  cd rbshark/
   bundle install
-  bundle exec exe/rb_packet_capture -i eth0
+  bundle exec exe/rbshark -i eth0
 
 docker exec -it sample_docker_node2_1 /bin/sh
   ping <node1 IP Addr>
@@ -56,7 +56,7 @@ vagrant ssh node1
   [please set rbenv]
   cd /vagrant
   bundle install
-  bundle exec exe/rb_packet_capture -i eth1
+  bundle exec exe/rbshark -i eth1
 
 vagrant ssh node2
   ping 192.168.33.11
@@ -64,5 +64,5 @@ vagrant ssh node2
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/rb_packet_capture.
+Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/rbshark.
 

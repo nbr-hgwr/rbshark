@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rb_packet_capture (0.1.0)
+    rbshark (0.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -45,6 +45,7 @@ GEM
     rubocop-ast (0.4.0)
       parser (>= 2.7.1.4)
     ruby-progressbar (1.10.1)
+    thor (1.1.0)
     unicode-display_width (1.7.0)
 
 PLATFORMS
@@ -54,9 +55,10 @@ DEPENDENCIES
   bundler
   pry
   rake (~> 12.0)
-  rb_packet_capture!
+  rbshark!
   rspec
   rubocop
+  thor
 
 BUNDLED WITH
    2.1.4

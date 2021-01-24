@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-require_relative 'lib/rb_packet_capture/version'
+require_relative 'lib/rbshark/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'rb_packet_capture'
-  spec.version       = RbPacketCapture::VERSION
+  spec.name          = 'rbshark'
+  spec.version       = Rbshark::VERSION
   spec.authors       = ['nbr-hgwr']
   spec.email         = ['mp7.fal@gmail.com']
 
   spec.summary       = 'packet capture tool by Ruby'
   spec.description   = 'packet capture tool by Ruby'
-  spec.homepage      = 'https://github.com/nbr-hgwr/rb_packet_capture'
+  spec.homepage      = 'https://github.com/nbr-hgwr/rbshark'
   spec.required_ruby_version = Gem::Requirement.new('>= 2.3.0')
 
   # Specify which files should be added to the gem when it is released.
@@ -27,4 +27,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'rspec'
   spec.add_development_dependency 'rubocop'
+  spec.add_development_dependency 'thor'
 end
