@@ -9,7 +9,7 @@ module Rbshark
     end
 
     def execute
-      Rbshark::Socketer.new(@options['interface']).start if @options.include?('interface')
+      Rbshark::Socketer.new(@options).start
     rescue StandardError => e
       raise e
     end

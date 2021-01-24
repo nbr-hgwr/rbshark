@@ -9,6 +9,7 @@ module Rbshark
   # CLIで受けたコマンドに対しての処理を行う
   class CLI < Thor
     class_option :interface, :type => :string, :aliases => '-i', :desc => 'specify interface'
+    class_option :time, :type => :numeric, :aliases => '-t', :desc => 'specify end time'
     default_command :analyse
 
     def self.exit_on_failure?
