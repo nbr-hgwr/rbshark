@@ -7,19 +7,21 @@ require 'rbshark/resource/type'
 
 module Rbshark
   class Socketer
-    def initialize(interface)
-      @interface = interface
+    def initialize(options)
+      @options = options
     end
 
     def start
       socket = Socket.open(Socket::AF_PACKET, Socket::SOCK_RAW, Rbshark::ETH_P_ALL)
-      ifreq = []
-      ifreq.push(@interface)
-      ifreq = ifreq.dup.pack('a' + Rbshark::IFREQ_SIZE.to_s)
-      socket.ioctl(Rbshark::SIOCGIFINDEX, ifreq)
-      if_num = ifreq[Socket::IFNAMSIZ, Rbshark::IFINDEX_SIZE]
+      if @options.key?('interface')
+        ifreq = []
+        ifreq.push(@options['interface'])
+        ifreq = ifreq.dup.pack('a' + Rbshark::IFREQ_SIZE.to_s)
+        socket.ioctl(Rbshark::SIOCGIFINDEX, ifreq)
+        if_num = ifreq[Socket::IFNAMSIZ, Rbshark::IFINDEX_SIZE]
 
-      socket.bind(sockaddr_ll(if_num))
+        socket.bind(sockaddr_ll(if_num))
+      end
       bind(socket)
     end
 
@@ -31,7 +33,12 @@ module Rbshark
     end
 
     def bind(socket)
+      end_time = Time.now + @options['time'] if @options.key?('time')
       while true
+        # パケットを受信しないとループが回らないため、終了時間を過ぎてもパケットを受信しないと終了しない
+        if @options.key?('time')
+          break if Time.now > end_time
+        end
         mesg = socket.recvfrom(1024*8)
         frame = mesg[0]
         ether_header = Rbshark::EthernetAnalyzer.new(frame)
