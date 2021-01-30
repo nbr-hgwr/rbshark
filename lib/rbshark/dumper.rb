@@ -21,12 +21,12 @@ module Rbshark
       when 'big'
         @byte_order = 'N*'
       else
-        $stderr.puts 'Error: byte order is incorrect. -b [litte|big]'
+        warn 'Error: byte order is incorrect. -b [litte|big]'
         exit(1)
       end
 
       set_pcap_hdr
-      #create_file(@file_path)
+      # create_file(@file_path)
     end
 
     def create_file(file_path)
@@ -55,11 +55,11 @@ module Rbshark
       when 'all'
         @network = [0x00000065].pack(@byte_order)
       end
-      #write_file(pcap_hdr.pack('H*'))
+      # write_file(pcap_hdr.pack('H*'))
     end
 
     def packet_convert(frame)
-      packet_data = frame.unpack('H*').first.to_i(16)
+      # packet_data = frame.unpack1('H*').to_i(16)
     end
   end
 end

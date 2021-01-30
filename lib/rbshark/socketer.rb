@@ -43,8 +43,8 @@ module Rbshark
         frame = mesg[0]
         ether_header = Rbshark::EthernetAnalyzer.new(frame)
         printer = Rbshark::Printer.new
-        #frame.unpack('H*').first.to_i(16)
-        #Rbshark::Dumper.new(frame) if @options['dump']
+        # frame.unpack('H*').first.to_i(16)
+        # Rbshark::Dumper.new(frame) if @options['dump']
         printer.print_ethernet(ether_header)
         case ether_header.check_protocol_type
         when 'ARP'
