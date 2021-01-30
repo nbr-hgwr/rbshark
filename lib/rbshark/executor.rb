@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rbshark/socketer'
+require 'rbshark/dumper'
 
 module Rbshark
   class Executor
@@ -9,6 +10,7 @@ module Rbshark
     end
 
     def execute
+      Rbshark::Dumper.new(@options) if @options.key?('write')
       Rbshark::Socketer.new(@options).start
     rescue StandardError => e
       raise e
