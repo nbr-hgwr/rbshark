@@ -25,7 +25,7 @@ Metrics/PerceivedComplexity:
 # 改行が難しい場合もあるため許容
 # 参考 https://github.com/rubocop-hq/rubocop-jp/issues/32
 Metrics/LineLength:
-  Max: 110
+  Max: 145
 
 Metrics/BlockLength:
   Max: 30

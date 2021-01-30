@@ -5,8 +5,12 @@ services:
     volumes:
       - ../:/rbshark
     tty: true
+    environment:
+      TZ: Asia/Tokyo
   node2:
     build: ./node2
     volumes:
       - ../:/rbshark
     tty: true
+    environment:
+      TZ: Asia/Tokyo
