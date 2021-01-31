@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module PacketCapture
+module Rbshark
   class IPV6Addr
     def initialize(addr)
       @addr = addr

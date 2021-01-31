@@ -2,7 +2,9 @@
 
 require 'rbshark/executor'
 require 'rbshark/version'
-require 'optparse'
+require 'rbshark/socketer'
+require 'rbshark/dumper'
+require 'rbshark/reader'
 require 'thor'
 
 module Rbshark
@@ -20,23 +22,30 @@ module Rbshark
       true
     end
 
-    desc 'capture <option>', 'capture and print packet'
-    def capture
+    desc 'dump <option>', 'dump pcap'
+    option :print, type: :boolean, aliases: '-p', default: false, desc: 'use print packet'
+    def dump
       if options.key?('write')
+        pcap = Rbshark::Dumper.new(@options)
+        Rbshark::Socketer.new(@options, pcap).start
+      else
         warn 'Error: file was not specified. -w <write_filte_path>'
         exit(1)
       end
-      Rbshark::Executor.new(options).execute
-    end
-
-    desc 'dump <option>', 'dump pcap'
-    def dump
-      Rbshark::Executor.new(options).execute
     end
 
     desc 'analyse <option>', 'analyse pcap'
+    option :read, type: :string, aliases: '-r', desc: 'specify read file. ex) hoge.pcap'
+    option :print, type: :boolean, aliases: '-p', default: true, desc: 'use print packet'
     def analyse
-      Rbshark::Executor.new(options).execute
+      unless options.key?('read')
+        warn 'Error: file was not specified. -r <read_filte_path>'
+        exit(1)
+      end
+      pcap = Rbshark::Reader.new(@options['read'])
+      pcap.packet_data.each do |packet|
+        Rbshark::Executor.new(packet[:data], @options['print'])
+      end
     end
   end
 end
