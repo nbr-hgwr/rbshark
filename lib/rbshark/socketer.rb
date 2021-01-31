@@ -50,7 +50,7 @@ module Rbshark
         frame = mesg[0]
         ether_header = Rbshark::EthernetAnalyzer.new(frame)
         @pcap.dump_packet(frame, ts) if @options['write']
-        executor = Rbshark::Executor.new(@options, frame)
+        Rbshark::Executor.new(frame, @options['print'])
       end
     end
   end
