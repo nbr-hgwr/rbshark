@@ -2,6 +2,7 @@
 
 require 'rbshark/socketer'
 require 'rbshark/dumper'
+require 'rbshark/reader'
 
 module Rbshark
   class Executor

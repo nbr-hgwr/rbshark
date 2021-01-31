@@ -22,7 +22,7 @@ module Rbshark
 
     desc 'capture <option>', 'capture and print packet'
     def capture
-      if options.key?('write')
+      unless options.key?('write')
         warn 'Error: file was not specified. -w <write_filte_path>'
         exit(1)
       end
@@ -35,8 +35,13 @@ module Rbshark
     end
 
     desc 'analyse <option>', 'analyse pcap'
+    option :read, type: :string, aliases: '-r', desc: 'specify read file. ex) hoge.pcap'
     def analyse
-      Rbshark::Executor.new(options).execute
+      unless options.key?('read')
+        warn 'Error: file was not specified. -r <read_filte_path>'
+        exit(1)
+      end
+      pcap = Rbshark::Reader.new(@options).analyse_pcap
     end
   end
 end
