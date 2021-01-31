@@ -45,11 +45,10 @@ module Rbshark
         # パケットの取得部分
         mesg = socket.recvfrom(1024*8)
         # pcap用のタイムスタンプを取得
-        ts = Time.now
+        timestamp = Time.now
         # パケットのデータはrecvfromだと[0]に該当するので分離させる
         frame = mesg[0]
-        ether_header = Rbshark::EthernetAnalyzer.new(frame)
-        @pcap.dump_packet(frame, ts) if @options['write']
+        @pcap.dump_packet(frame, timestamp) if @options['write']
         Rbshark::Executor.new(frame, @options['print'])
       end
     end

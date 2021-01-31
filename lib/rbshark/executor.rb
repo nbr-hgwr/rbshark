@@ -5,15 +5,15 @@ require 'rbshark/printer'
 
 module Rbshark
   class Executor
-    def initialize(frame, print=nil)
+    def initialize(frame, print = nil)
       @print = print
       @frame = frame
 
       @printer = Rbshark::Printer.new if @print
-      exec_ether()
+      exec_ether
     end
 
-    def exec_ether()
+    def exec_ether
       ether_header = Rbshark::EthernetAnalyzer.new(@frame)
       @printer.print_ethernet(ether_header) if @print
 
@@ -25,7 +25,7 @@ module Rbshark
         ip_header = Rbshark::IPAnalyzer.new(@frame, ether_header.return_byte)
         @printer.print_ip(ip_header) if @print
         exec_ip(ip_header)
-      # when 'IPv6'
+        # when 'IPv6'
         # ipv6_header = IPV6Analyzer.new(frame, ether_header.return_byte)
         # print_ip(ipv6_header)
       end

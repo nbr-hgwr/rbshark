@@ -25,11 +25,12 @@ module Rbshark
     desc 'dump <option>', 'dump pcap'
     option :print, type: :boolean, aliases: '-p', default: false, desc: 'use print packet'
     def dump
-      unless options.key?('write')
+      if options.key?('write')
+        pcap = Rbshark::Dumper.new(@options)
+        Rbshark::Socketer.new(@options, pcap).start
+      else
         warn 'Error: file was not specified. -w <write_filte_path>'
         exit(1)
-      else pcap = Rbshark::Dumper.new(@options)
-        Rbshark::Socketer.new(@options, pcap).start
       end
     end
 

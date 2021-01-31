@@ -76,16 +76,16 @@ module Rbshark
       end
     end
 
-    def dump_packet(frame, ts)
+    def dump_packet(frame, timestamp)
       packet_hdr = {
         # UNIX時刻を記録
         ts_sec: {
-          value: [ts.to_i.to_s(16).to_i(16)].pack(@byte_order32),
+          value: [timestamp.to_i.to_s(16).to_i(16)].pack(@byte_order32),
           byte: 4
         },
         # マイクロ秒を記録
         ts_usec: {
-          value: [ts.usec.to_i.to_s(16).to_i(16)].pack(@byte_order32),
+          value: [timestamp.usec.to_i.to_s(16).to_i(16)].pack(@byte_order32),
           byte: 4
         },
         # キャプチャしたパケットのバイト数を記録

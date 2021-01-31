@@ -4,6 +4,5 @@ require 'rbshark/socketer'
 
 module Rbshark
   class Executor
-
   end
 end

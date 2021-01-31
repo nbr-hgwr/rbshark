@@ -3,7 +3,7 @@
 module Rbshark
   class PcapHeader
     attr_reader :pcap_hdr
-    def initialize()
+    def initialize
       @pcap_hdr = {
         magic_number: {
           value: nil,
@@ -39,6 +39,5 @@ module Rbshark
         }
       }
     end
-
   end
 end
