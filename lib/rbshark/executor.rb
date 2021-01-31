@@ -10,8 +10,12 @@ module Rbshark
     end
 
     def execute
-      Rbshark::Dumper.new(@options) if @options.key?('write')
-      Rbshark::Socketer.new(@options).start
+      if @options.key?('write')
+        pcap = Rbshark::Dumper.new(@options)
+        Rbshark::Socketer.new(@options, pcap).start
+      else
+        Rbshark::Socketer.new(@options).start
+      end
     rescue StandardError => e
       raise e
     end

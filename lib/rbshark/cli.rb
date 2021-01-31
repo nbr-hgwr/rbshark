@@ -12,7 +12,7 @@ module Rbshark
     class_option :time, type: :numeric, aliases: '-t', desc: 'specify end time (s). ex) -t 30'
     class_option :write, type: :string, aliases: '-w', desc: 'specify write path. ex) -w hoge.pcap'
     class_option :byte_order, type: :string, aliases: '-b', default: 'little', desc: 'specify byte order. ex) -b [little|big]. default little'
-    class_option :protocol, type: :string, aliases: '-p', default: 'all', desc: 'specify protocol type. ex) -p [all|ipv4|ipv6|arp]'
+    # class_option :protocol, type: :string, aliases: '-p', default: 'all', desc: 'specify protocol type. ex) -p [all|ipv4|ipv6|arp]'
 
     default_command :analyse
 
@@ -22,6 +22,10 @@ module Rbshark
 
     desc 'capture <option>', 'capture and print packet'
     def capture
+      if options.key?('write')
+        warn 'Error: file was not specified. -w <write_filte_path>'
+        exit(1)
+      end
       Rbshark::Executor.new(options).execute
     end
 
