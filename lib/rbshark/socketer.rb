@@ -7,8 +7,9 @@ require 'rbshark/resource/type'
 
 module Rbshark
   class Socketer
-    def initialize(options)
+    def initialize(options, pcap = nil)
       @options = options
+      @pcap = pcap
     end
 
     def start
@@ -39,13 +40,18 @@ module Rbshark
         if @options.key?('time')
           break if Time.now > end_time
         end
+
+        # パケットの取得部分
         mesg = socket.recvfrom(1024*8)
+        # pcap用のタイムスタンプを取得
+        ts = Time.now
+        # パケットのデータはrecvfromだと[0]に該当するので分離させる
         frame = mesg[0]
         ether_header = Rbshark::EthernetAnalyzer.new(frame)
         printer = Rbshark::Printer.new
-        # frame.unpack('H*').first.to_i(16)
-        # Rbshark::Dumper.new(frame) if @options['dump']
+        @pcap.dump_packet(frame, ts) if @options['write']
         printer.print_ethernet(ether_header)
+
         case ether_header.check_protocol_type
         when 'ARP'
           arp_header = Rbshark::ARPAnalyzer.new(frame, ether_header.return_byte)
