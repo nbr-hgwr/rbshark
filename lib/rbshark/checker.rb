@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
+require 'rbshark/socketer'
 
 module Rbshark
-  class Checker
+  class Executor
 
   end
 end

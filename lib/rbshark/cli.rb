@@ -2,13 +2,16 @@
 
 require 'rbshark/executor'
 require 'rbshark/version'
-require 'optparse'
+require 'rbshark/socketer'
+require 'rbshark/dumper'
+require 'rbshark/reader'
 require 'thor'
 
 module Rbshark
   # CLIで受けたコマンドに対しての処理を行う
   class CLI < Thor
     class_option :interface, type: :string, aliases: '-i', desc: 'specify interface. ex) -i eth0'
+    class_option :print, type: :boolean, aliases: '-p', default: false, desc: 'use print packet'
     class_option :time, type: :numeric, aliases: '-t', desc: 'specify end time (s). ex) -t 30'
     class_option :write, type: :string, aliases: '-w', desc: 'specify write path. ex) -w hoge.pcap'
     class_option :byte_order, type: :string, aliases: '-b', default: 'little', desc: 'specify byte order. ex) -b [little|big]. default little'
@@ -20,23 +23,20 @@ module Rbshark
       true
     end
 
-    desc 'capture <option>', 'capture and print packet'
-    def capture
+    desc 'dump <option>', 'dump pcap'
+    def dump
       unless options.key?('write')
         warn 'Error: file was not specified. -w <write_filte_path>'
         exit(1)
+      else pcap = Rbshark::Dumper.new(@options)
+        Rbshark::Socketer.new(@options, pcap).start
       end
-      Rbshark::Executor.new(options).execute
-    end
-
-    desc 'dump <option>', 'dump pcap'
-    def dump
-      Rbshark::Executor.new(options).execute
     end
 
     desc 'analyse <option>', 'analyse pcap'
     option :read, type: :string, aliases: '-r', desc: 'specify read file. ex) hoge.pcap'
     def analyse
+      options[:print] = true
       unless options.key?('read')
         warn 'Error: file was not specified. -r <read_filte_path>'
         exit(1)
