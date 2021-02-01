@@ -24,6 +24,7 @@ module Rbshark
 
     desc 'dump <option>', 'dump pcap'
     option :print, type: :boolean, aliases: '-p', default: false, desc: 'use print packet'
+    option :count, type: :numeric, aliases: '-c', desc: 'specify packet count'
     def dump
       if options.key?('write')
         pcap = Rbshark::Dumper.new(@options)
