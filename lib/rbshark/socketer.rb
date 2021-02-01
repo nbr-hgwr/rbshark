@@ -36,8 +36,11 @@ module Rbshark
 
     def bind(socket)
       end_time = Time.now + @options['time'] if @options.key?('time')
+      end_count = @options['count'] if @options.key?('count')
+      packet_count = 0
       while true
         # パケットを受信しないとループが回らないため、終了時間を過ぎてもパケットを受信しないと終了しない
+        # 要改善
         if @options.key?('time')
           break if Time.now > end_time
         end
@@ -50,7 +53,14 @@ module Rbshark
         frame = mesg[0]
         @pcap.dump_packet(frame, timestamp) if @options['write']
         Rbshark::Executor.new(frame, @options['print'])
+
+        packet_count += 1
+        if @options.key?('count')
+          break if end_count == packet_count
+        end
       end
+
+      puts "#{packet_count} packets captured."
     end
   end
 end
