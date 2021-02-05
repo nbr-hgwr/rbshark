@@ -44,7 +44,7 @@ module Rbshark
       count = 0
       first_pakcet = pcap.packet_data[0][:hdr]
       pcap.packet_data.each do |packet|
-        Rbshark::Executor.new(packet[:data], packet[:hdr], first_pakcet, count, @options['print'], @options['view']).exec_ether
+        Rbshark::Executor.new(packet[:data], packet[:hdr], first_pakcet, count, @options['print'], @options['view'], pcap.byte_order32).exec_ether
         count += 1
       end
     end

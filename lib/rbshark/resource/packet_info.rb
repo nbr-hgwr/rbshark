@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Rbshark
   class PacketInfo
     attr_reader :packet_info
@@ -6,7 +8,7 @@ module Rbshark
         # 何番目にキャプチャされたパケットかを表す番号
         count: count,
         # 最初のパケットがキャプチャされてからの経過時間
-        time_since: time_since,
+        time_since: time_since
       }
     end
 

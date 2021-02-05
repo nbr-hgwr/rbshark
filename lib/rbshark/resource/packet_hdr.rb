@@ -3,7 +3,7 @@
 module Rbshark
   class PacketHeader
     attr_reader :packet_hdr
-    def initialize(ts_sec=nil, ts_usec=nil, incl_len=nil, orig_len=nil)
+    def initialize(ts_sec = nil, ts_usec=nil, incl_len=nil, orig_len=nil)
       @packet_hdr = {
         # UNIX時刻を記録
         ts_sec: {

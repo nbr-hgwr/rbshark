@@ -6,16 +6,16 @@ require 'rbshark/resource/packet_info'
 
 module Rbshark
   class Executor
-    def initialize(frame, packet_hdr, first_cap_packet, count, print, view)
+    def initialize(frame, packet_hdr, first_cap_packet, count, print, view, byte_order32)
       @print = print
       @frame = frame
       @packet_hdr = packet_hdr
       @view = view
 
-      cap_time_sec = packet_hdr.packet_hdr[:ts_sec][:value].unpack("V*")[0].to_i
-      cap_time_usec = packet_hdr.packet_hdr[:ts_usec][:value].unpack("V*")[0].to_i
-      first_cap_time_sec = first_cap_packet.packet_hdr[:ts_sec][:value].unpack("V*")[0].to_i
-      first_cap_time_usec = first_cap_packet.packet_hdr[:ts_usec][:value].unpack("V*")[0].to_i
+      cap_time_sec = packet_hdr.packet_hdr[:ts_sec][:value].unpack1(byte_order32).to_i
+      cap_time_usec = packet_hdr.packet_hdr[:ts_usec][:value].unpack1(byte_order32).to_i
+      first_cap_time_sec = first_cap_packet.packet_hdr[:ts_sec][:value].unpack1(byte_order32).to_i
+      first_cap_time_usec = first_cap_packet.packet_hdr[:ts_usec][:value].unpack1(byte_order32).to_i
       time_since = (Time.at(cap_time_sec, cap_time_usec, :usec) - Time.at(first_cap_time_sec.to_i, first_cap_time_usec.to_i, :usec)).to_s.split('.')
 
       @packet_info = Rbshark::PacketInfo.new(count, time_since)

@@ -54,7 +54,7 @@ module Rbshark
         packet_hdr = @pcap.set_packet_hdr(frame, timestamp)
         first_cap_packet = packet_hdr if packet_count == 0
         @pcap.dump_packet(frame, timestamp) if @options['write']
-        exec = Rbshark::Executor.new(frame, packet_hdr, first_cap_packet, packet_count, @options['print'], @options['view'])
+        exec = Rbshark::Executor.new(frame, packet_hdr, first_cap_packet, packet_count, @options['print'], @options['view'], pcap.byte_order32)
         exec.exec_ether
 
         packet_count += 1

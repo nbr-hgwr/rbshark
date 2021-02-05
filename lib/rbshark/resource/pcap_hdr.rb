@@ -4,8 +4,7 @@ module Rbshark
   class PcapHeader
     attr_reader :pcap_hdr
     def initialize(magic_number=nil, version_major=nil, version_minor=nil,
-      thiszone=nil, sigfigs=nil, snaplen=nil, network=nil
-    )
+                   thiszone=nil, sigfigs=nil, snaplen=nil, network=nil)
       @pcap_hdr = {
         magic_number: {
           value: magic_number,

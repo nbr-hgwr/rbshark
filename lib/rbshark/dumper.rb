@@ -5,6 +5,8 @@ require 'fileutils'
 module Rbshark
   class Dumper
     attr_reader :offset
+    attr_reader :byte_order32
+    attr_reader :byte_order16
 
     def initialize(options)
       @file_path = options['write']
