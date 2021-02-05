@@ -3,38 +3,40 @@
 module Rbshark
   class PcapHeader
     attr_reader :pcap_hdr
-    def initialize
+    def initialize(magic_number=nil, version_major=nil, version_minor=nil,
+      thiszone=nil, sigfigs=nil, snaplen=nil, network=nil
+    )
       @pcap_hdr = {
         magic_number: {
-          value: nil,
+          value: magic_number,
           byte: 4
         },
         # バージョン2.4で固定
         version_major: {
-          value: nil,
+          value: version_major,
           byte: 2
         },
         version_minor: {
-          value: nil,
+          value: version_minor,
           byte: 2
         },
         # 0(GMTのオフセット)からホストのタイムゾーンのオフセットを引く
         thiszone: {
-          value: nil,
+          value: thiszone,
           byte: 4
         },
         # 調査不足のため0で固定
         sigfigs: {
-          value: nil,
+          value: sigfigs,
           byte: 4
         },
         # 65535に固定
         snaplen: {
-          value: nil,
+          value: snaplen,
           byte: 4
         },
         network: {
-          value: nil,
+          value: network,
           byte: 4
         }
       }

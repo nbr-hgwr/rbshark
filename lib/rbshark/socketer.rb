@@ -8,7 +8,7 @@ require 'rbshark/resource/type'
 
 module Rbshark
   class Socketer
-    def initialize(options, pcap = nil)
+    def initialize(options, pcap)
       @options = options
       @pcap = pcap
     end
@@ -51,8 +51,11 @@ module Rbshark
         timestamp = Time.now
         # パケットのデータはrecvfromだと[0]に該当するので分離させる
         frame = mesg[0]
+        packet_hdr = @pcap.set_packet_hdr(frame, timestamp)
+        first_cap_packet = packet_hdr if packet_count == 0
         @pcap.dump_packet(frame, timestamp) if @options['write']
-        Rbshark::Executor.new(frame, @options['print'])
+        exec = Rbshark::Executor.new(frame, packet_hdr, first_cap_packet, packet_count, @options['print'], @options['view'])
+        exec.exec_ether
 
         packet_count += 1
         if @options.key?('count')

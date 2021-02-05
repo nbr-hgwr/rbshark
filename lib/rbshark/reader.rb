@@ -16,7 +16,6 @@ module Rbshark
       @offset = 0
       @pcap_hdr = split_pcap_hdr(pcap_data)
 
-      @pcap_hdr.pcap_hdr[:magic_number][:value].unpack1('H*')
       case @pcap_hdr.pcap_hdr[:magic_number][:value].unpack1('H*')
       when 'a1b2c3d4'
         @byte_order32 = 'N*'
