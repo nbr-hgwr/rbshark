@@ -5,6 +5,8 @@ require 'fileutils'
 module Rbshark
   class Dumper
     attr_reader :offset
+    attr_reader :byte_order32
+    attr_reader :byte_order16
 
     def initialize(options)
       @file_path = options['write']
@@ -21,9 +23,15 @@ module Rbshark
         warn 'Error: byte order is incorrect. -b [litte|big]'
         exit(1)
       end
+    end
 
+    def dump_pcap_hdr
       delete_file(@file_path)
-      set_pcap_hdr
+      pcap_hdr = set_pcap_hdr
+
+      pcap_hdr.pcap_hdr.each do |_key, binary|
+        write_file(binary[:value], binary[:byte])
+      end
     end
 
     def delete_file(file_path)
@@ -36,73 +44,30 @@ module Rbshark
     end
 
     def set_pcap_hdr
-      pcap_hdr = {
-        magic_number: {
-          value: [0xa1b2c3d4].pack(@byte_order32),
-          byte: 4
-        },
-        # バージョン2.4で固定
-        version_major: {
-          value: [0x0002].pack(@byte_order16),
-          byte: 2
-        },
-        version_minor: {
-          value: [0x0004].pack(@byte_order16),
-          byte: 2
-        },
-        # 0(GMTのオフセット)からホストのタイムゾーンのオフセットを引く
-        thiszone: {
-          value: [(0 - Time.now.utc_offset)].pack(@byte_order32),
-          byte: 4
-        },
-        # 調査不足のため0で固定
-        sigfigs: {
-          value: [0x00000000].pack(@byte_order32),
-          byte: 4
-        },
-        # 65535に固定
-        snaplen: {
-          value: [0x0000ffff].pack(@byte_order32),
-          byte: 4
-        },
-        network: {
-          value: [0x00000001].pack(@byte_order32),
-          byte: 4
-        }
-      }
+      pcap_hdr = Rbshark::PcapHeader.new(
+        [0xa1b2c3d4].pack(@byte_order32),
+        [0x0002].pack(@byte_order16),
+        [0x0004].pack(@byte_order16),
+        [(0 - Time.now.utc_offset)].pack(@byte_order32),
+        [0x00000000].pack(@byte_order32),
+        [0x0000ffff].pack(@byte_order32),
+        [0x00000001].pack(@byte_order32)
+      )
+    end
 
-      pcap_hdr.each do |_key, binary|
-        write_file(binary[:value], binary[:byte])
-      end
+    def set_packet_hdr(frame, timestamp)
+      packet_hdr = Rbshark::PacketHeader.new(
+        [timestamp.to_i.to_s(16).to_i(16)].pack(@byte_order32),
+        [timestamp.usec.to_i.to_s(16).to_i(16)].pack(@byte_order32),
+        [frame.size.to_s(16).to_i(16)].pack(@byte_order32),
+        [frame.size.to_s(16).to_i(16)].pack(@byte_order32)
+      )
     end
 
     def dump_packet(frame, timestamp)
-      packet_hdr = {
-        # UNIX時刻を記録
-        ts_sec: {
-          value: [timestamp.to_i.to_s(16).to_i(16)].pack(@byte_order32),
-          byte: 4
-        },
-        # マイクロ秒を記録
-        ts_usec: {
-          value: [timestamp.usec.to_i.to_s(16).to_i(16)].pack(@byte_order32),
-          byte: 4
-        },
-        # キャプチャしたパケットのバイト数を記録
-        incl_len: {
-          value: [frame.size.to_s(16).to_i(16)].pack(@byte_order32),
-          byte: 4
-        },
-        # 実際に保存したパケットのバイト数を記録
-        # recvfromの時点で65536bitまでしか受け取らないようにしている
-        # そのためorig_lenはincl_lenに合わせる
-        orig_len: {
-          value: [frame.size.to_s(16).to_i(16)].pack(@byte_order32),
-          byte: 4
-        }
-      }
+      packet_hdr = set_packet_hdr(frame, timestamp)
 
-      packet_hdr.each do |_key, binary|
+      packet_hdr.packet_hdr.each do |_key, binary|
         write_file(binary[:value], binary[:byte])
       end
 

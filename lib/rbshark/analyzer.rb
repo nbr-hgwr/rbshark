@@ -164,6 +164,8 @@ module Rbshark
     attr_reader :icmp_type
     attr_reader :icmp_code
     attr_reader :icmp_checksum
+    attr_reader :icmp_id
+    attr_reader :icmp_seq
 
     def initialize(frame, byte)
       @frame = frame
@@ -172,12 +174,14 @@ module Rbshark
       @icmp_type = uint8(1)
       @icmp_code = uint8(1)
       @icmp_checksum = uint16
+      @icmp_id = uint16
+      @icmp_seq = uint16
     end
 
     def check_type
       case @icmp_type
       when 0
-        'Echo Reply'
+        'Echo (ping) Reply'
       when 3
         'Destination Unreachable'
       when 4
@@ -185,7 +189,7 @@ module Rbshark
       when 5
         'Redirect'
       when 8
-        'Echo Request'
+        'Echo (ping) Request'
       when 11
         'Time Exceeded '
       when 12

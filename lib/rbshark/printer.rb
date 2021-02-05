@@ -2,6 +2,26 @@
 
 module Rbshark
   class Printer
+    def print_arp_short(packet_info)
+      case packet_info[:msg_type]
+      when 'ARP REQUEST'
+        puts "#{packet_info[:count]}   #{packet_info[:time_since][0]}     #{packet_info[:src_hrd]} -> #{packet_info[:dst_hrd]} #{packet_info[:msg_type]} Who has #{packet_info[:dst_ip]}? Tell #{packet_info[:src_ip]}"
+      when 'ARP REPLY'
+        puts "#{packet_info[:count]}   #{packet_info[:time_since][0]}     #{packet_info[:src_hrd]} -> #{packet_info[:dst_hrd]} #{packet_info[:msg_type]} #{packet_info[:src_ip]} is at #{packet_info[:src_hrd]}"
+      else
+        puts "#{packet_info[:count]}   #{packet_info[:time_since][0]}     #{packet_info[:src_hrd]} -> #{packet_info[:dst_hrd]} #{packet_info[:msg_type]}"
+      end
+    end
+
+    def print_icmp_short(packet_info)
+      case packet_info[:msg_type]
+      when 'Echo (ping) Reply', 'Echo (ping) Request'
+        puts "#{packet_info[:count]}   #{packet_info[:time_since][0]}     #{packet_info[:src_ip]} -> #{packet_info[:dst_ip]} #{packet_info[:msg_type]} id=#{packet_info[:id]} seq=#{packet_info[:seq]} ttl=#{packet_info[:ttl]}"
+      else
+        puts "#{packet_info[:count]}   #{packet_info[:time_since][0]}     #{packet_info[:src_ip]} -> #{packet_info[:dst_ip]} #{packet_info[:msg_type]}"
+      end
+    end
+
     def print_ethernet(ether_header)
       puts 'Ethernet Header-----------------'
       puts "  dst: #{ether_header.ether_dhost}"
