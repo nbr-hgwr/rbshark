@@ -14,3 +14,10 @@ services:
     tty: true
     environment:
       TZ: Asia/Tokyo
+networks:
+  default:
+    enable_ipv6: true
+    ipam:
+      config:
+        - subnet: 2001:db8:1::/64
+          gateway: 2001:db8:1::1
