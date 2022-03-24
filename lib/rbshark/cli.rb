@@ -5,6 +5,7 @@ require 'rbshark/version'
 require 'rbshark/socketer'
 require 'rbshark/dumper'
 require 'rbshark/reader'
+require 'rbshark/interface'
 require 'thor'
 
 module Rbshark
@@ -26,7 +27,13 @@ module Rbshark
     desc 'dump <option>', 'dump pcap'
     option :print, type: :boolean, aliases: '-p', default: false, desc: 'use print packet'
     option :count, type: :numeric, aliases: '-c', desc: 'specify packet count'
+    option :list_interface, type: :boolean, aliases: '-D', desc: 'show interface list'
     def dump
+      if @options.key?('list_interface')
+        interfaces = Rbshark::Interface.new()
+        interfaces.print_interface_list(interfaces.get_interface_list)
+        exit(1)
+      end
       pcap = Rbshark::Dumper.new(@options)
       pcap.dump_pcap_hdr if options.key?('write')
       Rbshark::Socketer.new(@options, pcap).start
