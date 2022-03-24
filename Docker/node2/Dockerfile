@@ -1,7 +1,7 @@
 FROM centos:7
 
 # rubyとrailsのバージョンを指定
-ENV ruby_ver="2.7.0"
+ENV ruby_ver="2.7.3"
 
 # 必要なパッケージをインストール
 RUN yum -y update
@@ -17,5 +17,4 @@ RUN echo 'export RBENV_ROOT="/usr/local/rbenv"' >> /etc/profile.d/rbenv.sh
 RUN echo 'export PATH="${RBENV_ROOT}/bin:${PATH}"' >> /etc/profile.d/rbenv.sh
 RUN echo 'eval "$(rbenv init --no-rehash -)"' >> /etc/profile.d/rbenv.sh
 
-# rubyとrailsをインストール
 RUN source /etc/profile.d/rbenv.sh; rbenv install ${ruby_ver}; rbenv global ${ruby_ver}

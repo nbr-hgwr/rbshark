@@ -16,11 +16,7 @@ module Rbshark
     def start
       socket = Socket.open(Socket::AF_PACKET, Socket::SOCK_RAW, Rbshark::ETH_P_ALL)
       if @options.key?('interface')
-        ifreq = []
-        ifreq.push(@options['interface'])
-        ifreq = ifreq.dup.pack('a' + Rbshark::IFREQ_SIZE.to_s)
-        socket.ioctl(Rbshark::SIOCGIFINDEX, ifreq)
-        if_num = ifreq[Socket::IFNAMSIZ, Rbshark::IFINDEX_SIZE]
+        if_num = Rbshark::Interface.new().get_interface(socket, @options['interface'])
 
         socket.bind(sockaddr_ll(if_num))
       end
@@ -54,7 +50,7 @@ module Rbshark
         packet_hdr = @pcap.set_packet_hdr(frame, timestamp)
         first_cap_packet = packet_hdr if packet_count == 0
         @pcap.dump_packet(frame, timestamp) if @options['write']
-        exec = Rbshark::Executor.new(frame, packet_hdr, first_cap_packet, packet_count, @options['print'], @options['view'], pcap.byte_order32)
+        exec = Rbshark::Executor.new(frame, packet_hdr, first_cap_packet, packet_count, @options['print'], @options['view'], @pcap.byte_order32)
         exec.exec_ether
 
         packet_count += 1

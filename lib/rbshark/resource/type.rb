@@ -6,6 +6,9 @@ module Rbshark
   ETH_P_IPV6            = 0x86dd
   ETH_P_ARP             = 0x0806
   SIOCGIFINDEX          = 0x8933
+  SIOCGIFCONF           = 0x8912
+  SIOCGIFNAME           = 0x8910
+  SIOCGIFFLAGS          = 0x8913
   SIOCGIFHWADDR         = 0x8927
   IFREQ_SIZE            = 0x0028 # sizeof(ifreq) on 64bit
   IFINDEX_SIZE          = 0x0004 # sizeof(ifreq.ifr_ifindex) on 64bit
