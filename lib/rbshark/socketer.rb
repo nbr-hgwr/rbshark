@@ -33,7 +33,7 @@ module Rbshark
     def bind(socket)
       end_time = Time.now + @options['time'] if @options.key?('time')
       end_count = @options['count'] if @options.key?('count')
-      packet_count = 0
+      packet_count = 1
       while true
         # パケットを受信しないとループが回らないため、終了時間を過ぎてもパケットを受信しないと終了しない
         # 要改善
@@ -48,7 +48,7 @@ module Rbshark
         # パケットのデータはrecvfromだと[0]に該当するので分離させる
         frame = mesg[0]
         packet_hdr = @pcap.set_packet_hdr(frame, timestamp)
-        first_cap_packet = packet_hdr if packet_count == 0
+        first_cap_packet = packet_hdr if packet_count == 1
         @pcap.dump_packet(frame, timestamp) if @options['write']
         exec = Rbshark::Executor.new(frame, packet_hdr, first_cap_packet, packet_count, @options['print'], @options['view'], @pcap.byte_order32)
         exec.exec_ether
