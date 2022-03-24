@@ -5,7 +5,7 @@ ENV ruby_ver="2.7.3"
 
 # 必要なパッケージをインストール
 RUN yum -y update
-RUN yum -y install git gcc gcc-c++ tar openssl openssl-devel readline-devel zlib zlib-devel bzip2 iproute
+RUN yum -y install git gcc gcc-c++ tar openssl openssl-devel readline-devel zlib zlib-devel bzip2 iproute tcpdump wireshark
 RUN yum clean all
 
 # rubyとbundleをダウンロード
