@@ -30,7 +30,7 @@ module Rbshark
     option :list_interface, type: :boolean, aliases: '-D', desc: 'show interface list'
     def dump
       if @options.key?('list_interface')
-        interfaces = Rbshark::Interface.new()
+        interfaces = Rbshark::Interface.new
         interfaces.print_interface_list(interfaces.get_interface_list)
         exit(1)
       end

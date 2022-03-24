@@ -16,7 +16,7 @@ module Rbshark
     def start
       socket = Socket.open(Socket::AF_PACKET, Socket::SOCK_RAW, Rbshark::ETH_P_ALL)
       if @options.key?('interface')
-        if_num = Rbshark::Interface.new().get_interface(socket, @options['interface'])
+        if_num = Rbshark::Interface.new.get_interface(socket, @options['interface'])
 
         socket.bind(sockaddr_ll(if_num))
       end
