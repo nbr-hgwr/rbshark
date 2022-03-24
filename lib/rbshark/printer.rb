@@ -2,23 +2,47 @@
 
 module Rbshark
   class Printer
+    def get_count_space(count)
+      space = case count.to_s.length
+              when 1
+                '          '
+              when 2
+                '         '
+              when 3
+                '        '
+              when 4
+                '       '
+              when 5
+                '       '
+              when 6
+                '      '
+              else
+                '     '
+              end
+        space
+    end
+
     def print_arp_short(packet_info)
+      space = get_count_space(packet_info[:count])
+
       case packet_info[:msg_type]
       when 'ARP REQUEST'
-        puts "#{packet_info[:count]}   #{packet_info[:time_since][0]}     #{packet_info[:src_hrd]} -> #{packet_info[:dst_hrd]} #{packet_info[:msg_type]} Who has #{packet_info[:dst_ip]}? Tell #{packet_info[:src_ip]}"
+        puts "#{packet_info[:count]}#{space}#{packet_info[:time_since][0]}   #{packet_info[:src_hrd]} -> #{packet_info[:dst_hrd]} #{packet_info[:msg_type]} Who has #{packet_info[:dst_ip]}? Tell #{packet_info[:src_ip]}"
       when 'ARP REPLY'
-        puts "#{packet_info[:count]}   #{packet_info[:time_since][0]}     #{packet_info[:src_hrd]} -> #{packet_info[:dst_hrd]} #{packet_info[:msg_type]} #{packet_info[:src_ip]} is at #{packet_info[:src_hrd]}"
+        puts "#{packet_info[:count]}#{space}#{packet_info[:time_since][0]}   #{packet_info[:src_hrd]} -> #{packet_info[:dst_hrd]} #{packet_info[:msg_type]} #{packet_info[:src_ip]} is at #{packet_info[:src_hrd]}"
       else
-        puts "#{packet_info[:count]}   #{packet_info[:time_since][0]}     #{packet_info[:src_hrd]} -> #{packet_info[:dst_hrd]} #{packet_info[:msg_type]}"
+        puts "#{packet_info[:count]}#{space}#{packet_info[:time_since][0]}   #{packet_info[:src_hrd]} -> #{packet_info[:dst_hrd]} #{packet_info[:msg_type]}"
       end
     end
 
     def print_icmp_short(packet_info)
+      space = get_count_space(packet_info[:count])
+
       case packet_info[:msg_type]
       when 'Echo (ping) Reply', 'Echo (ping) Request'
-        puts "#{packet_info[:count]}   #{packet_info[:time_since][0]}     #{packet_info[:src_ip]} -> #{packet_info[:dst_ip]} #{packet_info[:msg_type]} id=#{packet_info[:id]} seq=#{packet_info[:seq]} ttl=#{packet_info[:ttl]}"
+        puts "#{packet_info[:count]}#{space}#{packet_info[:time_since][0]}   #{packet_info[:src_ip]} -> #{packet_info[:dst_ip]} #{packet_info[:pro_type]} #{packet_info[:msg_type]} id=#{packet_info[:id]} seq=#{packet_info[:seq]} ttl=#{packet_info[:ttl]}"
       else
-        puts "#{packet_info[:count]}   #{packet_info[:time_since][0]}     #{packet_info[:src_ip]} -> #{packet_info[:dst_ip]} #{packet_info[:msg_type]}"
+        puts "#{packet_info[:count]}#{space}#{packet_info[:time_since][0]}   #{packet_info[:src_ip]} -> #{packet_info[:dst_ip]} #{packet_info[:pro_type]}"
       end
     end
 
