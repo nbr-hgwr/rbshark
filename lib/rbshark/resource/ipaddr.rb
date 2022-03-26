@@ -10,13 +10,13 @@ module Rbshark
 
   class IPV4Addr < IPAddr
     def to_s
-      @addr.join(':')
+      @addr.join('.')
     end
   end
 
   class IPV6Addr < IPAddr
     def to_s
-      @addr.join('.')
+      @addr.join(':')
     end
   end
 end

@@ -38,7 +38,7 @@ module Rbshark
     def print_icmp_short(packet_info)
       space = get_count_space(packet_info[:count])
 
-      # exho reply|request のみidとseqが存在するので分ける
+      # echo reply|request のみidとseqが存在するので分ける
       case packet_info[:msg_type]
       when 'Echo (ping) Reply', 'Echo (ping) Request'
         puts "#{packet_info[:count]}#{space}#{packet_info[:time_since][0]}   #{packet_info[:src_ip]} -> #{packet_info[:dst_ip]} #{packet_info[:pro_type]} #{packet_info[:msg_type]} id=#{packet_info[:id]} seq=#{packet_info[:seq]} ttl=#{packet_info[:ttl]}"
@@ -50,7 +50,7 @@ module Rbshark
     def print_icmp6_short(packet_info)
       space = get_count_space(packet_info[:count])
 
-      # exho reply|request のみidとseqが存在するので分ける
+      # echo reply|request のみidとseqが存在するので分ける
       case packet_info[:msg_type]
       when 'Echo (ping) Reply', 'Echo (ping) Request'
         puts "#{packet_info[:count]}#{space}#{packet_info[:time_since][0]}   #{packet_info[:src_ip]} -> #{packet_info[:dst_ip]} #{packet_info[:pro_type]} #{packet_info[:msg_type]} id=#{packet_info[:id]} seq=#{packet_info[:seq]} hop_limit=#{packet_info[:hlim]}"
@@ -82,7 +82,7 @@ module Rbshark
       puts 'IP Header-----------------------'
       puts "  dst: #{ip_header.ip_dst}"
       puts "  src: #{ip_header.ip_src}"
-      puts "  type: #{ip_header.ip_p} (#{ip_header.check_protocol_type(ip_header.ip_p)})"
+      puts "  type: #{ip_header.ip_pro} (#{ip_header.check_protocol_type})"
       puts "  version: #{ip_header.version}, header_len: #{ip_header.ip_hl}, tos: #{ip_header.ip_tos}"
       puts "  len: #{ip_header.ip_len}, id: #{ip_header.ip_id}, flag_off: #{ip_header.ip_off}"
       puts "  ttl: #{ip_header.ip_ttl}, check: #{ip_header.ip_sum}"

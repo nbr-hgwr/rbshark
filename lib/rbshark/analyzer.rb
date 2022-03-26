@@ -90,9 +90,9 @@ module Rbshark
       @ar_pln = uint8(1)
       @ar_op  = uint16
       @ar_sha = MacAddr.new uint8(6)
-      @ar_sip = IPAddr.new uint8(4)
+      @ar_sip = IPV4Addr.new uint8(4)
       @ar_tha = MacAddr.new uint8(6)
-      @ar_tip = IPAddr.new uint8(4)
+      @ar_tip = IPV4Addr.new uint8(4)
     end
 
     def check_protocol_type
@@ -280,8 +280,8 @@ module Rbshark
     end
 
     def check_protocol_type
-      case ip_pro
-      when 0..142
+      case @ip_pro
+      when 0...142
         @type[@ip_pro.to_s]
       else
         'Unknown'
@@ -314,10 +314,10 @@ module Rbshark
       @ip_id = uint16
       @ip_off = uint16
       @ip_ttl = uint8(1)
-      @ip_p = uint8(1)
+      @ip_pro = uint8(1)
       @ip_sum = uint16
-      @ip_src = IPAddr.new uint8(4)
-      @ip_dst = IPAddr.new uint8(4)
+      @ip_src = IPV4Addr.new uint8(4)
+      @ip_dst = IPV4Addr.new uint8(4)
     end
   end
 

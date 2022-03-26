@@ -38,7 +38,7 @@ module Rbshark
           @printer.print_arp_short(@packet_info.packet_info) unless @view
         end
       when 'IP'
-        ip_header = Rbshark::IPAnalyzer.new(@frame, ether_header.return_byte)
+        ip_header = Rbshark::IPV4Analyzer.new(@frame, ether_header.return_byte)
         @packet_info.set_ip(ip_header)
 
         if @print
