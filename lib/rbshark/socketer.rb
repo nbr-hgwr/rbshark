@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 require 'socket'
-require 'rbshark/analyzer'
-require 'rbshark/printer'
-require 'rbshark/executor'
-require 'rbshark/resource/type'
 
 module Rbshark
   class Socketer

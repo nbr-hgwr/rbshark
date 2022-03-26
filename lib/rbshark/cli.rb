@@ -1,11 +1,5 @@
 # frozen_string_literal: true
 
-require 'rbshark/executor'
-require 'rbshark/version'
-require 'rbshark/socketer'
-require 'rbshark/dumper'
-require 'rbshark/reader'
-require 'rbshark/interface'
 require 'thor'
 
 module Rbshark

@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-require 'rbshark/analyzer'
-require 'rbshark/printer'
-require 'rbshark/resource/packet_info'
-
 module Rbshark
   class Executor
     def initialize(frame, packet_hdr, first_cap_packet, count, print, view, byte_order32)
