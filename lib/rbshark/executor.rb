@@ -63,7 +63,10 @@ module Rbshark
         end
       when 'TCP'
         tcp = Rbshark::TCPAnalyzer.new(@frame, ip_header.return_byte)
-        @printer.print_tcp(tcp) if @print
+        if @print
+          @printer.print_tcp(tcp) if @view
+          @printer.print_tcp_short(@packet_info.packet_info, tcp) unless @view
+        end
       when 'UDP'
         udp = Rbshark::UDPAnalyzer.new(@frame, ip_header.return_byte)
         @printer.print_udp(udp) if @print

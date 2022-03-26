@@ -40,7 +40,7 @@ module Rbshark
 
     def set_tcp_opt
       opt_size = (@th_off * 4) - 20
-      @th_opt = []
+      @th_opt  = []
       opt_start_byte = @byte
 
       while opt_size + opt_start_byte > @byte
@@ -66,12 +66,12 @@ module Rbshark
           # MSS (4Byte)
           opt[:type_name] = 'MSS'
           opt[:len] = uint8(1)
-          opt[:data] = uint16
+          opt[:data][:mss] = uint16
         when 3
           # Window Scale (3Byte)
           opt[:type_name] = 'Window Scale'
           opt[:len] = uint8(1)
-          opt[:data] = uint8(1)
+          opt[:data][:win_scale] = uint8(1) << 4
         when 4
           # SACK Permitted (2Byte)
           opt[:type_name] = 'SACK Permitted'
@@ -90,12 +90,14 @@ module Rbshark
           # Time Stamp (10byte)
           opt[:type_name] = 'Time Stamp'
           opt[:len] = uint8(1)
-          opt[:data][:ts] = uint32
-          opt[:data][:ts_reply] = uint32
+          opt[:data][:ts_val] = uint32
+          opt[:data][:ts_ecr] = uint32
         end
 
         @th_opt.push opt
       end
+
+      @th_opt.sort_by!{|x| x[:type_num] }
     end
   end
 end

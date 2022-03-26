@@ -107,6 +107,28 @@ module Rbshark
       puts "  id: #{icmp.icmp_seq}"
     end
 
+    def print_tcp_short(packet_info, tcp)
+      space = get_count_space(packet_info[:count])
+      #require 'pry';binding.pry
+
+      packet = "#{packet_info[:count]}#{space}#{packet_info[:time_since][0]}   #{packet_info[:src_ip]} -> #{packet_info[:dst_ip]} #{packet_info[:pro_type]} #{packet_info[:msg_type]} #{tcp.th_sport} > #{tcp.th_dport} Seq=#{tcp.th_seq} Ack=#{tcp.th_ack} Win=#{tcp.th_win}"
+      tcp.th_opt.each do |opt|
+        case opt[:type_num]
+        when 2
+          packet += " MSS=#{opt[:data][:mss]}"
+        when 3
+          packet += " Win_Scale=#{opt[:data][:win_scale]}"
+        when 4
+          packet += " SACK_PERM=#{opt[:len]}"
+        when 5
+          packet += " SLE=#{opt[:data][:sle]} SRE=#{opt[:data][:sre]}"
+        when 8
+          packet += " TSval=#{opt[:data][:ts_val]} TSecr=#{opt[:data][:ts_ecr]}"
+        end
+      end
+      puts packet
+    end
+
     def print_tcp(tcp)
       puts 'TCP-----------------------------'
       puts "  src_port: #{tcp.th_sport}"
