@@ -33,10 +33,10 @@ module Rbshark
       Rbshark::Socketer.new(@options, pcap).start
     end
 
-    desc 'analyse <option>', 'analyse pcap'
+    desc 'analyze <option>', 'analyse pcap'
     option :read, type: :string, aliases: '-r', desc: 'specify read file. ex) hoge.pcap'
     option :print, type: :boolean, aliases: '-p', default: true, desc: 'use print packet'
-    def analyse
+    def analyze
       unless options.key?('read')
         warn 'Error: file was not specified. -r <read_filte_path>'
         exit(1)

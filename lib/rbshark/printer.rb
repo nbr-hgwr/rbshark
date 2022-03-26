@@ -111,9 +111,24 @@ module Rbshark
       puts 'TCP-----------------------------'
       puts "  src_port: #{tcp.th_sport}"
       puts "  dst_port: #{tcp.th_dport}"
-      puts "  sequence: #{tcp.th_seq}, off_set: #{tcp.th_off}"
+      puts "  sequence: #{tcp.th_seq}, ack: #{tcp.th_ack}"
+      puts "  off_set: #{tcp.th_off}, th_x2: #{tcp.th_x2}"
       puts "  flag: #{tcp.th_flags}, window: #{tcp.th_win}"
       puts "  check: #{tcp.th_sum}, urp: #{tcp.th_urp}"
+      puts "  opt:"
+      tcp.th_opt.each do |opt|
+        next if opt[:type_num] == 0
+        puts "    opt type: #{opt[:type_name]} (#{opt[:type_num]})"
+        puts "      opt len: #{opt[:len]}"
+        case opt[:type_num]
+        when 5
+          puts "      SLE start: #{opt[:data][:sle]}"
+          puts "      SLE start: #{opt[:data][:sre]}"
+        when 8
+          puts "      timestamp: #{opt[:data][:ts]}"
+          puts "      timestamp echo reply: #{opt[:data][:ts_reply]}"
+        end
+      end
     end
 
     def print_udp(udp)

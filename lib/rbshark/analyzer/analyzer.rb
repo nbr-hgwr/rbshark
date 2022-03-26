@@ -19,7 +19,7 @@ module Rbshark
     end
 
     def uint32
-      binary = (@frame[@byte].ord << 8) + @frame[@byte + 1].ord + @frame[@byte + 2].ord + @frame[@byte + 3].ord
+      binary = (@frame[@byte].ord << 24) + (@frame[@byte + 1].ord << 16) + (@frame[@byte + 2].ord << 8 ) + @frame[@byte + 3].ord
       @byte += 4
       binary
     end
