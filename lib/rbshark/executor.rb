@@ -45,9 +45,13 @@ module Rbshark
           @printer.print_ip(ip_header) if @view
         end
         exec_ip(ip_header)
-        # when 'IPv6'
-        # ipv6_header = IPV6Analyzer.new(frame, ether_header.return_byte)
-        # print_ip(ipv6_header)
+      when 'IPv6'
+        ipv6_header = IPV6Analyzer.new(@frame, ether_header.return_byte)
+        @packet_info.set_ipv6(ipv6_header)
+
+        if @print
+          @printer.print_ip6(ipv6_header) if @view
+        end
       end
     end
 

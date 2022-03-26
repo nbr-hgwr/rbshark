@@ -72,5 +72,11 @@ module Rbshark
       set_id(icmp.icmp_id)
       set_seq(icmp.icmp_seq)
     end
+
+    def set_ipv6(ip_header)
+      set_pro_type(ip_header.check_protocol_type)
+      set_src_ip(ip_header.ip6_src)
+      set_dst_ip(ip_header.ip6_dst)
+    end
   end
 end

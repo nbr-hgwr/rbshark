@@ -5,25 +5,35 @@ require 'rbshark/resource/type'
 module Rbshark
   class Analyzer
     def uint8(size)
-      r = if size == 1
+      binary = if size == 1
             @frame[@byte].ord
           else
             @frame[@byte...@byte + size].split('').map { |c| c.ord }
           end
       @byte += size
-      r
+      binary
     end
 
     def uint16
-      r = (@frame[@byte].ord << 8) + @frame[@byte + 1].ord
+      binary = (@frame[@byte].ord << 8) + @frame[@byte + 1].ord
       @byte += 2
-      r
+      binary
     end
 
     def uint32
-      r = (@frame[@byte].ord << 8) + @frame[@byte + 1].ord + @frame[@byte + 2].ord + @frame[@byte + 3].ord
+      binary = (@frame[@byte].ord << 8) + @frame[@byte + 1].ord + @frame[@byte + 2].ord + @frame[@byte + 3].ord
       @byte += 4
-      r
+      binary
+    end
+
+    def separate_ipv6
+      binary = []
+      for i in 0..7
+        binary.push ((@frame[@byte].ord << 8) + @frame[@byte+1].ord).to_s(16)
+        @byte += 2
+      end
+
+      binary
     end
 
     def return_byte
@@ -266,47 +276,28 @@ module Rbshark
 
   class IPV6Analyzer < Analyzer
     attr_reader :version
-    attr_reader :ip_hl
-    attr_reader :ip_tos
-    attr_reader :ip_len
-    attr_reader :ip_id
-    attr_reader :ip_off
-    attr_reader :ip_ttl
-    attr_reader :ip_p
-    attr_reader :ip_sum
-    attr_reader :ip_src
-    attr_reader :ip_dst
+    attr_reader :ip6_traffic_class
+    attr_reader :ip6_flow
+    attr_reader :ip6_plen
+    attr_reader :ip6_nxt
+    attr_reader :ip6_hlim
+    attr_reader :ip6_src
+    attr_reader :ip6_dst
 
     def initialize(frame, byte)
       @frame = frame
       @byte = byte
 
       @version = (@frame[@byte].ord >> 4) & 0xF
-      @ip_hl = @frame[@byte].ord & 0xF
-      @byte +=1
+      @ip6_traffic_class = @frame[@byte].ord & 0xF + (@frame[@byte + 1].ord >> 4) & 0xF
+      @byte += 2
 
-      @ip_tos = uint8(1)
-      @ip_len = uint16
-      @ip_id = uint16
-      @ip_off = uint16
-      @ip_ttl = uint8(1)
-      @ip_p = uint8(1)
-      @ip_sum = uint16
-      @ip_src = IPAddr.new uint8(4)
-      @ip_dst = IPAddr.new uint8(4)
-    end
-
-    def check_protocol_type
-      case @ip_p
-      when 1
-        'ICMP'
-      when 6
-        'TCP'
-      when 22
-        'UDP'
-      else
-        'Other'
-      end
+      @ip6_flow = (@frame[@byte].ord & 0xF) + uint16
+      @ip6_plen = uint16
+      @ip6_nxt = uint8(1)
+      @ip6_hlim = uint8(1)
+      @ip6_src = IPV6Addr.new separate_ipv6
+      @ip6_dst = IPV6Addr.new separate_ipv6
     end
   end
 end

@@ -75,6 +75,15 @@ module Rbshark
       puts "  ttl: #{ip_header.ip_ttl}, check: #{ip_header.ip_sum}"
     end
 
+    def print_ip6(ip6_header)
+      puts 'IPv6 Header-----------------------'
+      puts "  dst: #{ip6_header.ip6_dst}"
+      puts "  src: #{ip6_header.ip6_src}"
+      puts "  traffic class: #{ip6_header.ip6_traffic_class}"
+      puts "  version: #{ip6_header.version}, flow label: #{ip6_header.ip6_flow}, plen: #{ip6_header.ip6_plen}"
+      puts "  next header: #{ip6_header.ip6_nxt}, hop limit: #{ip6_header.ip6_hlim}"
+    end
+
     def print_icmp(icmp)
       puts 'ICMP----------------------------'
       puts "  type: #{icmp.icmp_type} (#{icmp.check_type})"
