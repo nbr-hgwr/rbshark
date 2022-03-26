@@ -38,11 +38,24 @@ module Rbshark
     def print_icmp_short(packet_info)
       space = get_count_space(packet_info[:count])
 
+      # exho reply|request のみidとseqが存在するので分ける
       case packet_info[:msg_type]
       when 'Echo (ping) Reply', 'Echo (ping) Request'
         puts "#{packet_info[:count]}#{space}#{packet_info[:time_since][0]}   #{packet_info[:src_ip]} -> #{packet_info[:dst_ip]} #{packet_info[:pro_type]} #{packet_info[:msg_type]} id=#{packet_info[:id]} seq=#{packet_info[:seq]} ttl=#{packet_info[:ttl]}"
       else
         puts "#{packet_info[:count]}#{space}#{packet_info[:time_since][0]}   #{packet_info[:src_ip]} -> #{packet_info[:dst_ip]} #{packet_info[:pro_type]}"
+      end
+    end
+
+    def print_icmp6_short(packet_info)
+      space = get_count_space(packet_info[:count])
+
+      # exho reply|request のみidとseqが存在するので分ける
+      case packet_info[:msg_type]
+      when 'Echo (ping) Reply', 'Echo (ping) Request'
+        puts "#{packet_info[:count]}#{space}#{packet_info[:time_since][0]}   #{packet_info[:src_ip]} -> #{packet_info[:dst_ip]} #{packet_info[:pro_type]} #{packet_info[:msg_type]} id=#{packet_info[:id]} seq=#{packet_info[:seq]} hop_limit=#{packet_info[:hlim]}"
+      else
+        puts "#{packet_info[:count]}#{space}#{packet_info[:time_since][0]}   #{packet_info[:src_ip]} -> #{packet_info[:dst_ip]} #{packet_info[:pro_type]} #{packet_info[:msg_type]} hop_limit=#{packet_info[:hlim]}"
       end
     end
 
@@ -69,7 +82,7 @@ module Rbshark
       puts 'IP Header-----------------------'
       puts "  dst: #{ip_header.ip_dst}"
       puts "  src: #{ip_header.ip_src}"
-      puts "  type: #{ip_header.ip_p} (#{ip_header.check_protocol_type})"
+      puts "  type: #{ip_header.ip_p} (#{ip_header.check_protocol_type(ip_header.ip_p)})"
       puts "  version: #{ip_header.version}, header_len: #{ip_header.ip_hl}, tos: #{ip_header.ip_tos}"
       puts "  len: #{ip_header.ip_len}, id: #{ip_header.ip_id}, flag_off: #{ip_header.ip_off}"
       puts "  ttl: #{ip_header.ip_ttl}, check: #{ip_header.ip_sum}"
@@ -77,11 +90,12 @@ module Rbshark
 
     def print_ip6(ip6_header)
       puts 'IPv6 Header-----------------------'
-      puts "  dst: #{ip6_header.ip6_dst}"
-      puts "  src: #{ip6_header.ip6_src}"
-      puts "  traffic class: #{ip6_header.ip6_traffic_class}"
-      puts "  version: #{ip6_header.version}, flow label: #{ip6_header.ip6_flow}, plen: #{ip6_header.ip6_plen}"
-      puts "  next header: #{ip6_header.ip6_nxt}, hop limit: #{ip6_header.ip6_hlim}"
+      puts "  dst: #{ip6_header.ip_dst}"
+      puts "  src: #{ip6_header.ip_src}"
+      puts "  type: #{ip6_header.check_protocol_type}, next header: #{ip6_header.ip_pro}"
+      puts "  traffic class: #{ip6_header.ip_traffic_class}"
+      puts "  version: #{ip6_header.version}, flow label: #{ip6_header.ip_flow}"
+      puts "  plen: #{ip6_header.ip_plen} hop limit: #{ip6_header.ip_hlim}"
     end
 
     def print_icmp(icmp)
@@ -89,6 +103,8 @@ module Rbshark
       puts "  type: #{icmp.icmp_type} (#{icmp.check_type})"
       puts "  code: #{icmp.icmp_code}"
       puts "  check: #{icmp.icmp_checksum}"
+      puts "  id: #{icmp.icmp_id}"
+      puts "  id: #{icmp.icmp_seq}"
     end
 
     def print_tcp(tcp)

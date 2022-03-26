@@ -48,6 +48,10 @@ module Rbshark
       @packet_info[:ttl] = ttl
     end
 
+    def set_ip6_hlim(hlim)
+      @packet_info[:hlim] = hlim
+    end
+
     def set_ether(ether_header)
       set_src_hrd(ether_header.ether_shost)
       set_dst_hrd(ether_header.ether_dhost)
@@ -73,10 +77,11 @@ module Rbshark
       set_seq(icmp.icmp_seq)
     end
 
-    def set_ipv6(ip_header)
-      set_pro_type(ip_header.check_protocol_type)
-      set_src_ip(ip_header.ip6_src)
-      set_dst_ip(ip_header.ip6_dst)
+    def set_ipv6(ip6_header)
+      set_pro_type(ip6_header.check_protocol_type)
+      set_src_ip(ip6_header.ip_src)
+      set_dst_ip(ip6_header.ip_dst)
+      set_ip6_hlim(ip6_header.ip_hlim)
     end
   end
 end
