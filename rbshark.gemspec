@@ -6,7 +6,6 @@ Gem::Specification.new do |spec|
   spec.name          = 'rbshark'
   spec.version       = Rbshark::VERSION
   spec.authors       = ['nbr-hgwr']
-  spec.email         = ['mp7.fal@gmail.com']
 
   spec.summary       = 'packet capture tool by Ruby'
   spec.description   = 'packet capture tool by Ruby'
