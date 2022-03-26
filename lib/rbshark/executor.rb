@@ -45,20 +45,43 @@ module Rbshark
           @printer.print_ip(ip_header) if @view
         end
         exec_ip(ip_header)
-        # when 'IPv6'
-        # ipv6_header = IPV6Analyzer.new(frame, ether_header.return_byte)
-        # print_ip(ipv6_header)
+      when 'IPv6'
+        ip6_header = IPV6Analyzer.new(@frame, ether_header.return_byte)
+        @packet_info.set_ipv6(ip6_header)
+
+        if @print
+          @printer.print_ip6(ip6_header) if @view
+        end
+        exec_ip6(ip6_header)
       end
     end
 
     def exec_ip(ip_header)
       case ip_header.check_protocol_type
       when 'ICMP'
-        icmp = Rbshark::ICMPAnalyzer.new(@frame, ip_header.return_byte)
+        icmp = Rbshark::ICMP4Analyzer.new(@frame, ip_header.return_byte)
         @packet_info.set_icmp(icmp)
         if @print
           @printer.print_icmp(icmp) if @view
           @printer.print_icmp_short(@packet_info.packet_info) unless @view
+        end
+      when 'TCP'
+        tcp = Rbshark::TCPAnalyzer.new(@frame, ip_header.return_byte)
+        @printer.print_tcp(tcp) if @print
+      when 'UDP'
+        udp = Rbshark::UDPAnalyzer.new(@frame, ip_header.return_byte)
+        @printer.print_udp(udp) if @print
+      end
+    end
+
+    def exec_ip6(ip6_header)
+      case ip6_header.check_protocol_type
+      when 'ICMP6'
+        icmp = Rbshark::ICMP6Analyzer.new(@frame, ip6_header.return_byte)
+        @packet_info.set_icmp(icmp)
+        if @print
+          @printer.print_icmp(icmp) if @view
+          @printer.print_icmp6_short(@packet_info.packet_info) unless @view
         end
       when 'TCP'
         tcp = Rbshark::TCPAnalyzer.new(@frame, ip_header.return_byte)

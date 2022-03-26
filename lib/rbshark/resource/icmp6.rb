@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 module Rbshark
-  class IPAddr
-    def initialize(addr)
-      @addr = addr
+  class ICMP6
+    def initialize(frame)
+      Type = {
+        :1 => 'Destination Unreachable'
+      }
     end
 
     def to_s
