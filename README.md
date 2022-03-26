@@ -42,7 +42,7 @@ docker exec -it docker_node1_1 /bin/sh
   source /etc/profile.d/rbenv.sh
   cd rbshark/
   bundle install
-  bundle exec exe/rbshark -i eth0
+  bundle exec exe/rbshark dump -i eth0
 
 docker exec -it docker_node2_1 /bin/sh
   ping <node1 IP Addr>
