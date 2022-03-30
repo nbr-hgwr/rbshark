@@ -44,10 +44,8 @@ module Rbshark
           timestamp = Time.now
           # パケットのデータはrecvfromだと[0]に該当するので分離させる
           frame = mesg[0]
-          packet_hdr = @pcap.set_packet_hdr(frame, timestamp)
-          first_cap_packet = packet_hdr if packet_count == 1
-          @pcap.dump_packet(frame, timestamp) if @options['write']
-          exec = Rbshark::Executor.new(frame, packet_hdr, first_cap_packet, packet_count, @options['print'], @options['view'], @pcap.byte_order32)
+
+          exec = Rbshark::Executor.new(frame, packet_count, timestamp, @pcap, @options['print'], @options['view'])
           exec.exec_ether
 
           if @options.key?('count')

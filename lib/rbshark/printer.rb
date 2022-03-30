@@ -143,12 +143,18 @@ module Rbshark
         puts "    opt type: #{opt[:type_name]} (#{opt[:type_num]})"
         puts "      opt len: #{opt[:len]}"
         case opt[:type_num]
+        when 2
+          puts "      MSS: #{opt[:data][:mss]}"
+        when 3
+          puts "      Window Scale: #{opt[:data][:win_scale]}"
+        when 4
+          puts "      SACK Permmid: #{opt[:len]}"
         when 5
           puts "      SLE start: #{opt[:data][:sle]}"
           puts "      SLE start: #{opt[:data][:sre]}"
         when 8
-          puts "      timestamp: #{opt[:data][:ts]}"
-          puts "      timestamp echo reply: #{opt[:data][:ts_reply]}"
+          puts "      timestamp: #{opt[:data][:ts_val]}"
+          puts "      timestamp echo reply: #{opt[:data][:ts_ecr]}"
         end
       end
     end

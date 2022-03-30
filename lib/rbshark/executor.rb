@@ -2,20 +2,31 @@
 
 module Rbshark
   class Executor
-    def initialize(frame, packet_hdr, first_cap_packet, count, print, view, byte_order32)
-      @print = print
+    def initialize(frame, count, timestamp, pcap, print, view)
       @frame = frame
-      @packet_hdr = packet_hdr
+      @pcap = pcap
+      @print = print
       @view = view
 
-      cap_time_sec = packet_hdr.packet_hdr[:ts_sec][:value].unpack1(byte_order32).to_i
-      cap_time_usec = packet_hdr.packet_hdr[:ts_usec][:value].unpack1(byte_order32).to_i
-      first_cap_time_sec = first_cap_packet.packet_hdr[:ts_sec][:value].unpack1(byte_order32).to_i
-      first_cap_time_usec = first_cap_packet.packet_hdr[:ts_usec][:value].unpack1(byte_order32).to_i
-      time_since = (Time.at(cap_time_sec, cap_time_usec, :usec) - Time.at(first_cap_time_sec.to_i, first_cap_time_usec.to_i, :usec)).to_s.split('.')
+      time_since = convert_packet_hdr(timestamp)
 
-      @packet_info = Rbshark::PacketInfo.new(count, time_since)
+      @packet_info = Rbshark::PacketInfo.new(@count, time_since)
       @printer = Rbshark::Printer.new if @print
+    end
+
+    def convert_packet_hdr(timestamp)
+      packet_hdr = @pcap.set_packet_hdr(@frame, timestamp)
+      @pcap.dump_packet(@frame, timestamp) if @write
+      cap_time_sec = packet_hdr.packet_hdr[:ts_sec][:value].unpack1(@pcap.byte_order32).to_i
+      cap_time_usec = packet_hdr.packet_hdr[:ts_usec][:value].unpack1(@pcap.byte_order32).to_i
+
+      if @count == 1
+        first_cap_time_sec = packet_hdr.packet_hdr[:ts_sec][:value].unpack1(@pcap.byte_order32).to_i
+        first_cap_time_usec = packet_hdr.packet_hdr[:ts_usec][:value].unpack1(@pcap.byte_order32).to_i
+      end
+
+      time_since = (Time.at(cap_time_sec, cap_time_usec, :usec) - Time.at(first_cap_time_sec.to_i, first_cap_time_usec.to_i, :usec)).to_s.split('.')
+      time_since
     end
 
     def exec_ether
