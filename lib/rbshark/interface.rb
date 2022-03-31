@@ -13,10 +13,12 @@ module Rbshark
       if_num
     end
 
+    # 利用可能なネットワークデバイス一覧を返す
     def get_interface_list
       Socket.getifaddrs
     end
 
+    # IPアドレスが割り当てられているinterfaceを出力する
     def print_interface_list(ifaddrs)
       ifaddrs.each do |ifaddr|
         puts "#{ifaddr.ifindex}: #{ifaddr.name} #{ifaddr.addr.ip_address}" if ifaddr.addr.ip?

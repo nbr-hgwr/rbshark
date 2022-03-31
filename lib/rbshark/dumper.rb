@@ -10,8 +10,9 @@ module Rbshark
 
     def initialize(options)
       @file_path = options['write']
-      @protocol = options['protocol']
-      @offset = 0
+      @protocol  = options['protocol']
+      @offset    = 0
+
       case options['byte_order']
       when 'little'
         @byte_order32 = 'V*'

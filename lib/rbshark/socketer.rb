@@ -12,6 +12,7 @@ module Rbshark
     end
 
     def start
+      # Ethernetヘッダ以上のパケットを扱うためのsocketディスクリプタを用意
       socket = Socket.open(Socket::AF_PACKET, Socket::SOCK_RAW, Rbshark::ETH_P_ALL)
       if @options.key?('interface')
         if_num = Rbshark::Interface.new.get_interface(socket, @options['interface'])

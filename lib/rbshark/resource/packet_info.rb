@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Rbshark
+  # 出力用のPacket情報を保持するためのモデル
   class PacketInfo
     attr_reader :packet_info
     def initialize(count, time_since)

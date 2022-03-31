@@ -23,6 +23,7 @@ module Rbshark
     option :count, type: :numeric, aliases: '-c', desc: 'specify packet count'
     option :list_interface, type: :boolean, aliases: '-D', desc: 'show interface list'
     def dump
+      # 利用できるネットワークデバイスを一覧表示させる
       if @options.key?('list_interface')
         interfaces = Rbshark::Interface.new
         interfaces.print_interface_list(interfaces.get_interface_list)
