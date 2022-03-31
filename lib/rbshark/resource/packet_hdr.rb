@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Rbshark
+  # pcapファイル用のpcaket毎につけるヘッダを定義
   class PacketHeader
     attr_reader :packet_hdr
     def initialize(ts_sec = nil, ts_usec = nil, incl_len=nil, orig_len=nil)

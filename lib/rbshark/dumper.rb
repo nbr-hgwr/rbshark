@@ -43,6 +43,7 @@ module Rbshark
       @offset += byte
     end
 
+    # pcapファイル自体のヘッダを生成
     def set_pcap_hdr
       pcap_hdr = Rbshark::PcapHeader.new(
         [0xa1b2c3d4].pack(@byte_order32),
@@ -55,6 +56,7 @@ module Rbshark
       )
     end
 
+    # pcapファイルで必要なpacket header(16byte)を定義
     def set_packet_hdr(frame, timestamp)
       packet_hdr = Rbshark::PacketHeader.new(
         [timestamp.to_i.to_s(16).to_i(16)].pack(@byte_order32),
@@ -64,13 +66,16 @@ module Rbshark
       )
     end
 
-    def dump_packet(frame, timestamp)
+    def dump_packet(frame, ts_sec, ts_usec)
+      # キャプチャしたframe(=対象のパケット)のパケットサイズと時刻からpcap用のパケットヘッダを生成
       packet_hdr = set_packet_hdr(frame, timestamp)
 
+      # 生成したパケットヘッダをpcapファイルへ書き出す
       packet_hdr.packet_hdr.each do |_key, binary|
         write_file(binary[:value], binary[:byte])
       end
 
+      # パケットヘッダを書き出した後、パケットを丸々ファイルへ書き出す
       write_file(frame, frame.size)
     end
   end
