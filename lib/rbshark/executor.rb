@@ -8,6 +8,8 @@ module Rbshark
       @print = print
       @view = view
 
+      # pcapファイル出力
+      @pcap.dump_packet(@frame, timestamp) if @write
       @printer = Rbshark::Printer.new if @print
     end
 
