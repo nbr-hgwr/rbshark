@@ -3,8 +3,7 @@
 module Rbshark
   class IPAnalyzer < Analyzer
     def initialize(frame, byte)
-      @frame = frame
-      @byte = byte
+      super(frame, byte)
 
       # プロトコル種別を定義
       # To Do: 量が多いのでhashとして持たせたくないので直す
@@ -164,6 +163,23 @@ module Rbshark
         'Unknown'
       end
     end
+
+    def validate_cksum
+      ip_header = @frame[@start_byte..@byte]
+      ip_header_bytes = @byte - @start_byte
+      @byte = @start_byte
+      sum = 0
+      for i in 1..ip_header_bytes/2
+        sum += uint16
+      end
+      sum = sum.to_s(16)
+      sum = sum[0].to_i(16) + sum[1..4].to_i(16)
+      if sum.to_s(16) == 'ffff'
+        true
+      else
+        false
+      end
+    end
   end
 
   class IPV4Analyzer < IPAnalyzer
@@ -178,6 +194,7 @@ module Rbshark
     attr_reader :ip_sum
     attr_reader :ip_src
     attr_reader :ip_dst
+    attr_reader :vali_sum
 
     def initialize(frame, byte)
       super(frame, byte)
@@ -195,6 +212,8 @@ module Rbshark
       @ip_sum = uint16
       @ip_src = IPV4Addr.new uint8(4)
       @ip_dst = IPV4Addr.new uint8(4)
+
+      @vali_sum = validate_cksum()
     end
   end
 

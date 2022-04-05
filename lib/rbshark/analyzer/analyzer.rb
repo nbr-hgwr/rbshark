@@ -3,6 +3,12 @@
 module Rbshark
   # パケットのバイナリデータを解析するためのクラス
   class Analyzer
+    def initialize (frame, byte)
+      @frame = frame
+      @byte = byte
+      @start_byte = byte
+    end
+
     # 8の倍数のbit分のデータを数値に変換して返す
     # size=1の場合は数値を返す
     # size>2の場合は8bitずつ数値にし配列にして返す

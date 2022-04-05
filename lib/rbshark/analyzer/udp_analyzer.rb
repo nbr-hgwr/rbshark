@@ -8,8 +8,7 @@ module Rbshark
     attr_reader :uh_sum
 
     def initialize(frame, byte)
-      @frame = frame
-      @byte = byte
+      super(frame, byte)
 
       @uh_sport = uint16
       @uh_dport = uint16

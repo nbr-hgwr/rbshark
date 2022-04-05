@@ -13,8 +13,7 @@ module Rbshark
     attr_reader :ar_tip
 
     def initialize(frame, byte)
-      @frame = frame
-      @byte = byte
+      super(frame, byte)
 
       @ar_hrd = uint16
       @ar_pro = uint16

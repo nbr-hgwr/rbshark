@@ -16,8 +16,7 @@ module Rbshark
     attr_reader :th_pad # tcpヘッダが32bit単位であることを保証するために32bit単位になるまで0埋めしてる部分
 
     def initialize(frame, byte)
-      @frame = frame
-      @byte = byte
+      super(frame, byte)
 
       @th_sport = uint16
       @th_dport = uint16

@@ -7,8 +7,7 @@ module Rbshark
     attr_reader :ether_type
 
     def initialize(frame, byte = 0)
-      @frame = frame
-      @byte = byte
+      super(frame, byte)
 
       @ether_dhost = MacAddr.new uint8(6)
       @ether_shost = MacAddr.new uint8(6)

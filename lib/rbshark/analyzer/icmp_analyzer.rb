@@ -9,8 +9,7 @@ module Rbshark
     attr_reader :icmp_seq
 
     def initialize(frame, byte)
-      @frame = frame
-      @byte = byte
+      super(frame, byte)
 
       @icmp_type = uint8(1)
       @icmp_code = uint8(1)
