@@ -165,14 +165,19 @@ module Rbshark
     end
 
     def validate_cksum
-      ip_header = @frame[@start_byte..@byte]
+      # IPヘッダのbyte数を計算
       ip_header_bytes = @byte - @start_byte
+      # frameから再度IPヘッダのデータを取るために@byteを初期化
       @byte = @start_byte
       sum = 0
+      # ipヘッダを16bitずつ足し合わせる
       for i in 1..ip_header_bytes/2
         sum += uint16
       end
+
       sum = sum.to_s(16)
+      # オーバーフローした1桁と後ろの4桁を足し合わせる
+      # 正常であれば sum = 0xffff になる
       sum = sum[0].to_i(16) + sum[1..4].to_i(16)
       if sum.to_s(16) == 'ffff'
         true

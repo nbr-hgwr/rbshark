@@ -3,6 +3,7 @@
 module Rbshark
   # パケットのバイナリデータを解析するためのクラス
   class Analyzer
+    attr_reader :start_byte
     def initialize (frame, byte)
       @frame = frame
       @byte = byte
