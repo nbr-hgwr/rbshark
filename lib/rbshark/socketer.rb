@@ -9,8 +9,10 @@ module Rbshark
       @options = options
       @print_words = []
 
-      @pcap = Rbshark::Dumper.new(@options)
-      @pcap.dump_pcap_hdr if @options.key?('write')
+      if @options.key?('write')
+        @pcap = Rbshark::Dumper.new(@options)
+        @pcap.dump_pcap_hdr
+      end
     end
 
     def start
