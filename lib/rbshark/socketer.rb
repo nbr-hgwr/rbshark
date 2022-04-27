@@ -4,8 +4,10 @@ require 'socket'
 
 module Rbshark
   class Socketer
+    attr_reader :print_words
     def initialize(options)
       @options = options
+      @print_words = []
 
       @pcap = Rbshark::Dumper.new(@options)
       @pcap.dump_pcap_hdr if @options.key?('write')
@@ -54,11 +56,17 @@ module Rbshark
           # 出力用のpacketデータを生成
           packet_info = Rbshark::PacketInfo.new(packet_count, time_since)
 
+          printer = Rbshark::Printer.new(@options['print'], @options['view'])
+
           # パケットのデータはrecvfromだと[0]に該当するので分離させる
           frame = mesg[0]
 
-          exec = Rbshark::Executor.new(frame, packet_info, @options['print'], @options['view'])
+          # pcapファイル出力
+          @pcap.dump_packet(@frame, timestamp) if @options.key?('write')
+
+          exec = Rbshark::Executor.new(frame, packet_info, printer)
           exec.exec_ether
+          @print_words.push(exec.printer.print_words)
 
           if @options.key?('count')
             break if end_count <= packet_count

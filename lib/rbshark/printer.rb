@@ -2,24 +2,19 @@
 
 module Rbshark
   class Printer
+    attr_reader :print_flag, :detail_flag, :print_words
+    def initialize(print_flag, detail_flag)
+      @print_flag = print_flag
+      @detail_flag = detail_flag
+      @print_words = nil
+    end
+
+    def print_packet_info
+      puts @print_words
+    end
+
     def get_count_space(count)
-      space = case count.to_s.length
-              when 1
-                '          '
-              when 2
-                '         '
-              when 3
-                '        '
-              when 4
-                '       '
-              when 5
-                '       '
-              when 6
-                '      '
-              else
-                '     '
-              end
-        space
+      ' ' * (11 - count.to_s.length)
     end
 
     def print_arp_short(packet_info)
@@ -27,11 +22,11 @@ module Rbshark
 
       case packet_info[:msg_type]
       when 'ARP REQUEST'
-        puts "#{packet_info[:count]}#{space}#{packet_info[:time_since][0]}   #{packet_info[:src_hrd]} -> #{packet_info[:dst_hrd]} #{packet_info[:msg_type]} Who has #{packet_info[:dst_ip]}? Tell #{packet_info[:src_ip]}"
+        @print_words = "#{packet_info[:count]}#{space}#{packet_info[:time_since][0]}   #{packet_info[:src_hrd]} -> #{packet_info[:dst_hrd]} #{packet_info[:msg_type]} Who has #{packet_info[:dst_ip]}? Tell #{packet_info[:src_ip]}"
       when 'ARP REPLY'
-        puts "#{packet_info[:count]}#{space}#{packet_info[:time_since][0]}   #{packet_info[:src_hrd]} -> #{packet_info[:dst_hrd]} #{packet_info[:msg_type]} #{packet_info[:src_ip]} is at #{packet_info[:src_hrd]}"
+        @print_words = "#{packet_info[:count]}#{space}#{packet_info[:time_since][0]}   #{packet_info[:src_hrd]} -> #{packet_info[:dst_hrd]} #{packet_info[:msg_type]} #{packet_info[:src_ip]} is at #{packet_info[:src_hrd]}"
       else
-        puts "#{packet_info[:count]}#{space}#{packet_info[:time_since][0]}   #{packet_info[:src_hrd]} -> #{packet_info[:dst_hrd]} #{packet_info[:msg_type]}"
+        @print_words = "#{packet_info[:count]}#{space}#{packet_info[:time_since][0]}   #{packet_info[:src_hrd]} -> #{packet_info[:dst_hrd]} #{packet_info[:msg_type]}"
       end
     end
 
@@ -41,9 +36,9 @@ module Rbshark
       # echo reply|request のみidとseqが存在するので分ける
       case packet_info[:msg_type]
       when 'Echo (ping) Reply', 'Echo (ping) Request'
-        puts "#{packet_info[:count]}#{space}#{packet_info[:time_since][0]}   #{packet_info[:src_ip]} -> #{packet_info[:dst_ip]} #{packet_info[:pro_type]} #{packet_info[:msg_type]} id=#{packet_info[:id]} seq=#{packet_info[:seq]} ttl=#{packet_info[:ttl]}"
+        @print_words = "#{packet_info[:count]}#{space}#{packet_info[:time_since][0]}   #{packet_info[:src_ip]} -> #{packet_info[:dst_ip]} #{packet_info[:pro_type]} #{packet_info[:msg_type]} id=#{packet_info[:id]} seq=#{packet_info[:seq]} ttl=#{packet_info[:ttl]}"
       else
-        puts "#{packet_info[:count]}#{space}#{packet_info[:time_since][0]}   #{packet_info[:src_ip]} -> #{packet_info[:dst_ip]} #{packet_info[:pro_type]}"
+        @print_words = "#{packet_info[:count]}#{space}#{packet_info[:time_since][0]}   #{packet_info[:src_ip]} -> #{packet_info[:dst_ip]} #{packet_info[:pro_type]}"
       end
     end
 
@@ -53,9 +48,9 @@ module Rbshark
       # echo reply|request のみidとseqが存在するので分ける
       case packet_info[:msg_type]
       when 'Echo (ping) Reply', 'Echo (ping) Request'
-        puts "#{packet_info[:count]}#{space}#{packet_info[:time_since][0]}   #{packet_info[:src_ip]} -> #{packet_info[:dst_ip]} #{packet_info[:pro_type]} #{packet_info[:msg_type]} id=#{packet_info[:id]} seq=#{packet_info[:seq]} hop_limit=#{packet_info[:hlim]}"
+        @print_words = "#{packet_info[:count]}#{space}#{packet_info[:time_since][0]}   #{packet_info[:src_ip]} -> #{packet_info[:dst_ip]} #{packet_info[:pro_type]} #{packet_info[:msg_type]} id=#{packet_info[:id]} seq=#{packet_info[:seq]} hop_limit=#{packet_info[:hlim]}"
       else
-        puts "#{packet_info[:count]}#{space}#{packet_info[:time_since][0]}   #{packet_info[:src_ip]} -> #{packet_info[:dst_ip]} #{packet_info[:pro_type]} #{packet_info[:msg_type]} hop_limit=#{packet_info[:hlim]}"
+        @print_words = "#{packet_info[:count]}#{space}#{packet_info[:time_since][0]}   #{packet_info[:src_ip]} -> #{packet_info[:dst_ip]} #{packet_info[:pro_type]} #{packet_info[:msg_type]} hop_limit=#{packet_info[:hlim]}"
       end
     end
 
@@ -109,24 +104,22 @@ module Rbshark
 
     def print_tcp_short(packet_info, tcp)
       space = get_count_space(packet_info[:count])
-      #require 'pry';binding.pry
 
-      packet = "#{packet_info[:count]}#{space}#{packet_info[:time_since][0]}   #{packet_info[:src_ip]} -> #{packet_info[:dst_ip]} #{packet_info[:pro_type]} #{packet_info[:msg_type]} #{tcp.th_sport} > #{tcp.th_dport} Seq=#{tcp.th_seq} Ack=#{tcp.th_ack} Win=#{tcp.th_win}"
+      @print_words = "#{packet_info[:count]}#{space}#{packet_info[:time_since][0]}   #{packet_info[:src_ip]} -> #{packet_info[:dst_ip]} #{packet_info[:pro_type]} #{packet_info[:msg_type]} #{tcp.th_sport} > #{tcp.th_dport} Seq=#{tcp.th_seq} Ack=#{tcp.th_ack} Win=#{tcp.th_win}"
       tcp.th_opt.each do |opt|
         case opt[:type_num]
         when 2
-          packet += " MSS=#{opt[:data][:mss]}"
+          @print_words += " MSS=#{opt[:data][:mss]}"
         when 3
-          packet += " Win_Scale=#{opt[:data][:win_scale]}"
+          @print_words += " Win_Scale=#{opt[:data][:win_scale]}"
         when 4
-          packet += " SACK_PERM=#{opt[:len]}"
+          @print_words += " SACK_PERM=#{opt[:len]}"
         when 5
-          packet += " SLE=#{opt[:data][:sle]} SRE=#{opt[:data][:sre]}"
+          @print_words += " SLE=#{opt[:data][:sle]} SRE=#{opt[:data][:sre]}"
         when 8
-          packet += " TSval=#{opt[:data][:ts_val]} TSecr=#{opt[:data][:ts_ecr]}"
+          @print_words += " TSval=#{opt[:data][:ts_val]} TSecr=#{opt[:data][:ts_ecr]}"
         end
       end
-      puts packet
     end
 
     def print_tcp(tcp)
